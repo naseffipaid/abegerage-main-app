@@ -6,7 +6,8 @@ const router = express.Router();
 // Import the add employee controller 
 const employeeController = require('../controllers/employee.controller');
 // Create a route to handle the add employee request on post
-router.post("/api/employee", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.createEmployee);  
+router.post("/api/employee", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.createEmployee); 
+//commit 
 
 
 
