@@ -25,6 +25,8 @@ import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
 import Orders from './markup/pages/Orders';
 import Customer from './markup/pages/Customer';
 import Employee from './markup/pages/Employee';
+import AddCustomer from './markup/pages/admin/AddCustomer';
+
 
 
 function App() {
@@ -43,6 +45,12 @@ function App() {
               <AddEmployee />
             </PrivateAuthRoute>
           } />
+          <Route path="/admin/add-customer"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <AddCustomer />
+            </PrivateAuthRoute>
+          } />
         <Route path="/admin/orders"
           element={
             <PrivateAuthRoute roles={[1, 2, 3]}>
@@ -51,7 +59,7 @@ function App() {
           } />
         <Route path="/admin/customers"
           element={
-            <PrivateAuthRoute roles={[2, 3]}>
+            <PrivateAuthRoute roles={[2,3]}>
               <Customer />
             </PrivateAuthRoute>
           } />

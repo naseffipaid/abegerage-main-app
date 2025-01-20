@@ -20,21 +20,20 @@ export const AuthProvider = ({ children }) => {
   const value = { isLogged, isAdmin, setIsAdmin, setIsLogged, employee };
 
   useEffect(() => {
-    // Retrieve the logged in user from local storage
-    const loggedInEmployee = getAuth();
-    // console.log(loggedInEmployee);
-    loggedInEmployee.then((response) => {
-      // console.log(response);
-      if (response.employee_token) {
+    const fetchAuth = async () => {
+      const loggedInEmployee = await getAuth(); // ✅ Await getAuth
+      console.log("🔹 Retrieved Auth Data:", loggedInEmployee); // Debugging
+  
+      if (loggedInEmployee.employee_token) {
         setIsLogged(true);
-        // 3 is the employee_role for admin
-        if (response.employee_role === 3) {
-            console.log(response.employee_role);
+        if (loggedInEmployee.employee_role === 3) {
           setIsAdmin(true);
         }
-        setEmployee(response);
+        setEmployee(loggedInEmployee);
       }
-    });
+    };
+  
+    fetchAuth(); // ✅ Call the async function
   }, []);
   return (
     <AuthContext.Provider value={value}>

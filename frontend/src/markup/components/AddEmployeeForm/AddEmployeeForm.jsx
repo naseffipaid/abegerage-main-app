@@ -19,13 +19,16 @@ function AddEmployeeForm() {
   const [serverError, setServerError] = useState('');
 
   // Create a variable to hold the user's token
-  let loggedInEmployeeToken = '';
+  var loggedInEmployeeToken = '';
   // Destructure the auth hook and get the token 
-  const { employee } = useAuth;
+  const { employee } = useAuth();
+  
+  console.log("employee is", employee)
   if (employee && employee.employee_token) {
     loggedInEmployeeToken = employee.employee_token;
   }
-
+  
+  console.log("Token being sent:", loggedInEmployeeToken)
 
   const handleSubmit = (e) => {
     // Prevent the default behavior of the form
@@ -85,14 +88,15 @@ function AddEmployeeForm() {
           setServerError(data.error)
         } else {
           // Handle successful response 
+          console.log(data);
           setSuccess(true);
           setServerError('')
           // Redirect to the employees page after 2 seconds 
           // For now, just redirect to the home page 
-          setTimeout(() => {
-            // window.location.href = '/admin/employees';
-            window.location.href = '/';
-          }, 2000);
+          // setTimeout(() => {
+          //   // window.location.href = '/admin/employees';
+          //   window.location.href = '/';
+          // }, 2000);
         }
       })
       // Handle Catch 

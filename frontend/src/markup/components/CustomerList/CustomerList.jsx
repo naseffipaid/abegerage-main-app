@@ -5,13 +5,13 @@ import { useAuth } from "../../../context/AuthContext";
 // Import the date-fns library 
 import { format } from 'date-fns'; // To properly format the date on the table 
 // Import the getAllEmployees function  
-import employeeService from "../../../services/employee.services";
+import customerService from "../../../services/customer.services";
 
 // Create the EmployeesList component 
-const EmployeesList = () => {
+const CustomerList = () => {
   // Create all the states we need to store the data
   // Create the employees state to store the employees data  
-  const [employees, setEmployees] = useState([]);
+  const [customers, setCustomers] = useState([]);
   // A state to serve as a flag to show the error message 
   const [apiError, setApiError] = useState(false);
   // A state to store the error message 
@@ -26,8 +26,8 @@ const EmployeesList = () => {
 
   useEffect(() => {
     // Call the getAllEmployees function 
-    const allEmployees = employeeService.getAllEmployees(token);
-    allEmployees.then((res) => {
+    const allCustomers = customerService.getAllCustomers(token);
+    allCustomers.then((res) => {
       if (!res.ok) {
         console.log(res.status);
         setApiError(true);
@@ -42,7 +42,7 @@ const EmployeesList = () => {
       return res.json()
     }).then((data) => {
       if (data.data.length !== 0) {
-        setEmployees(data.data)
+        setCustomers(data.data)
       }
 
     }).catch((err) => {
@@ -70,26 +70,25 @@ const EmployeesList = () => {
               < Table striped bordered hover >
                 <thead>
                   <tr>
-                    <th>Active</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Added Date</th>
-                    <th>Role</th>
+                    <th>Active</th>
                     <th>Edit/Delete</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {employees.map((employee) => (
-                    <tr key={employee.employee_id}>
-                      <td>{employee.active_employee ? "Yes" : "No"}</td>
-                      <td>{employee.employee_first_name}</td>
-                      <td>{employee.employee_last_name}</td>
-                      <td>{employee.employee_email}</td>
-                      <td>{employee.employee_phone}</td>
-                      <td>{format(new Date(employee.added_date), 'MM - dd - yyyy | kk:mm')}</td>
-                      <td>{employee.company_role_name}</td>
+                  {customers.map((customer) => (
+                    <tr key={customer.customer_id}>
+                     
+                      <td>{customer.customer_first_name}</td>
+                      <td>{customer.customer_last_name}</td>
+                      <td>{customer.customer_email}</td>
+                      <td>{customer.customer_phone_number}</td>
+                      <td>{format(new Date(customer.customer_added_date), 'MM - dd - yyyy | kk:mm')}</td>
+                      <td>{customer.active_customer_status ? "Yes" : "No"}</td>
                       <td>
                         <div className="edit-delete-icons">
                           edit | delete
@@ -108,4 +107,4 @@ const EmployeesList = () => {
 }
 
 // Export the EmployeesList component 
-export default EmployeesList;
+export default CustomerList;

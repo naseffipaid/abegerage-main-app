@@ -1,8 +1,8 @@
 import React from 'react'
-import { useAuth } from '../../context/AuthContext';
-import AdminMenu from '../components/AddEmployeeForm/AdminMenu/AdminMenu';
-import LoginForm from '../components/LoginForm/LoginForm';
-import CustomerList from '../components/CustomerList/CustomerList';
+import { useAuth } from '../../../context/AuthContext';
+import AdminMenu from '../../components/AddEmployeeForm/AdminMenu/AdminMenu';
+import AddCustomer from '../../components/AddCustomerForm/AddCustomer';
+import LoginForm from '../../components/LoginForm/LoginForm';
 
 function Customer() {
   const { isLogged, isAdmin } = useAuth();
@@ -20,7 +20,7 @@ function Customer() {
                   <AdminMenu/>
                 </div>
                 <div className="col-md-9 admin-right-side">
-                  <CustomerList />
+                  <AddCustomer />
                 </div>
               </div>
             </div>

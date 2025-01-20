@@ -8,6 +8,8 @@ const installRouter = require('./install.route');
 const employeeRouter = require('./employee.route');
 // Import the login router
 const loginRouter = require('./login.route');
+// Import the customer router
+const customerRouter = require('./customer.route');
 
 
 // Add the install router to the main router 
@@ -16,6 +18,8 @@ router.use(installRouter);
 router.use(employeeRouter);
 // Add the login router to the main router
 router.use(loginRouter);
+//Add customer controller to the main router
+router.use(customerRouter);
 
 
 
