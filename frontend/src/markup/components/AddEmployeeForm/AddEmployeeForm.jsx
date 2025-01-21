@@ -22,11 +22,11 @@ function AddEmployeeForm() {
   var loggedInEmployeeToken = '';
   // Destructure the auth hook and get the token 
   const { employee } = useAuth();
-<<<<<<< HEAD
+
   
   console.log("employee is", employee)
-=======
->>>>>>> 039268a5fe1737da37756fffa21e3de7f1231015
+
+
   if (employee && employee.employee_token) {
     loggedInEmployeeToken = employee.employee_token;
   }

@@ -47,8 +47,30 @@ async function getAllCustomers(req, res, next) {
     });
   }
 }
+ // Create the get single customer controller 
+ async function getsingleCustomer(req, res, next) {
+    const rawId = req.params.id; // Extract raw ID
+    const id = parseInt(rawId.trim(), 10); // Remove any spaces and convert to an integer
+    console.log("Sanitized ID:", id); // Log the sanitized ID
+
+    const customer = await customerService.getsingleCustomer(id);
+    console.log("Database response:", customer); // Log the database response
+
+    // Check if customer data is valid
+    if (!customer || Object.keys(customer).length === 0) {
+        console.error("Customer not found!"); // Debugging log
+        return res.status(404).json({ error: "Customer not found!" });
+    }
+
+    console.log("Returning customer data to client...");
+    return res.status(200).json({
+        status: "success",
+        data: customer,
+    });
+}
   // Export the createEmployee controller 
   module.exports = {
     createCustomer,
-    getAllCustomers
+    getAllCustomers,
+    getsingleCustomer
   };

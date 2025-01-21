@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button } from 'react-bootstrap';
+//import Link from react-router-dom
+import { Link } from 'react-router-dom';
 // Import the auth hook  
 import { useAuth } from "../../../context/AuthContext";
 // Import the date-fns library 
@@ -82,10 +84,9 @@ const CustomerList = () => {
                 <tbody>
                   {customers.map((customer) => (
                     <tr key={customer.customer_id}>
-                     
-                      <td>{customer.customer_first_name}</td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}><td>{customer.customer_first_name}</td></Link>
                       <td>{customer.customer_last_name}</td>
-                      <td>{customer.customer_email}</td>
+                      <Link to={`/admin/customers/${customer.customer_id}`}><td>{customer.customer_email}</td></Link>
                       <td>{customer.customer_phone_number}</td>
                       <td>{format(new Date(customer.customer_added_date), 'MM - dd - yyyy | kk:mm')}</td>
                       <td>{customer.active_customer_status ? "Yes" : "No"}</td>

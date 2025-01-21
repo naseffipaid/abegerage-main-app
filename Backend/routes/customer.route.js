@@ -9,6 +9,8 @@ const customerController = require('../controllers/customer.controller');
 router.post("/api/customer", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.createCustomer); 
 // Create a route to handle the get all employees request on get
 router.get("/api/customers", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.getAllCustomers);
+//create a route to get a single customer
+router.get("/api/customer/:id", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.getsingleCustomer);
 
 
 

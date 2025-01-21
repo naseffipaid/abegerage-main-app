@@ -69,11 +69,37 @@ async function getAllCustomers() {
     const rows = await conn.query(query);
     return rows;
 }
+// A function to get single Customer
+async function getsingleCustomer(id) {
+    const query = `
+        SELECT * FROM customer_identifier 
+        INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
+        WHERE customer_identifier.customer_id = ?
+        LIMIT 1`;
 
+    try {
+        const [rows] = await conn.query(query, [id]);
+        console.log("Raw rows type:", typeof rows); // Should log 'object'
+        console.log("Is rows an array?", Array.isArray(rows)); // Should log false
+        console.log("Raw rows value:", rows); // Log the raw response
+
+        // If rows is an object (single record), return it directly
+        if (rows && typeof rows === 'object') {
+            return rows;
+        }
+
+        console.error("No customer found or invalid query response.");
+        return null;
+    } catch (err) {
+        console.error("Query Error:", err);
+        return null;
+    }
+}
 // Export the functions for use in the controller
 module.exports = {
     checkIfCustomerExists,
     createCustomer,
     getCustomerByEmail,
-    getAllCustomers
+    getAllCustomers,
+    getsingleCustomer
 };

@@ -26,10 +26,23 @@ const getAllCustomers = async (token) => {
   const response = await fetch(`${api_url}/api/customers`, requestOptions);
   return response;
 }
+const getSingleCustomer = async (token,customer_id) => {
+  // console.log(token);
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    }
+  };
+  const response = await fetch(`${api_url}/api/customer/${customer_id}`, requestOptions);
+  return response;
+}
 
 // Export all the functions 
 const customerService = {
   createCustomer,
-  getAllCustomers
+  getAllCustomers,
+  getSingleCustomer
 }
 export default customerService; 
