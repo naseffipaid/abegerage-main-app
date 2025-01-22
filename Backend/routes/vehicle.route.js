@@ -7,6 +7,8 @@ const router = express.Router();
 const vehicleController = require('../controllers/vehicle.controller');
 // Create a route to handle the add employee request on post
 router.post("/api/vehicle", [authMiddleware.verifyToken, authMiddleware.isAdmin], vehicleController.addVehicle); 
+// Create a route to handle the get all vehicles request on get
+router.get("/api/vehicles/:customer_id", [authMiddleware.verifyToken], vehicleController.getVehicles);
 
 
 

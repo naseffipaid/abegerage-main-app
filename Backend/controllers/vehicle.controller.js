@@ -22,11 +22,27 @@ async function addVehicle(req, res, next) {
         });
       }
     }
-  
-
- 
+    // Create the getAllEmployees controller 
+async function getVehicles(req, res, next) {
+  // extract customer_id from the request params
+  const { customer_id } = req.params;
+  // Call the getvehicles method from the employee service 
+  const vehicles = await vehicleService.getVehicles(customer_id);
+  // console.log(employees);
+  if (!vehicles) {
+    res.status(400).json({
+      error: "Failed to get all customers!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: vehicles,
+    });
+  }
+}
   // Export the createEmployee controller 
   module.exports = {
     addVehicle,
+    getVehicles
     
   };

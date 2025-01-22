@@ -35,10 +35,19 @@ async function addVehicle(vehicle) {
     // Return the customer object
     return vehiclesData;
 }
-
+// A function to get all customers
+async function getVehicles(customer_id) {
+    // define query to get all vehicles by customer_id
+    const query = `SELECT * FROM customer_vehicle_info WHERE customer_id = ?`;
+    // execute the query
+    const rows = await conn.query(query, [customer_id]);
+    // return the vehicles
+    return rows;
+}
 
 // Export the functions for use in the controller
 module.exports = {
     addVehicle,
+    getVehicles
     
 };
