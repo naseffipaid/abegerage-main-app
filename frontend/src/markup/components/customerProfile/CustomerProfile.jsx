@@ -5,6 +5,7 @@ import { useAuth } from '../../../context/AuthContext';
 import customerService from '../../../services/customer.services';
 import { useParams } from 'react-router-dom';
 import AddVehicleForm from '../vehicles/AddVehicleForm';  // ✅ Import AddVehicleForm
+import VehiclePerCustomer from '../vehicles/VehiclePerCustomer';
 
 const CustomerProfile = () => {
   const { id } = useParams();  // ✅ Extract customer_id from URL
@@ -74,13 +75,15 @@ const CustomerProfile = () => {
             </div>
 
             {/* Vehicles Section */}
-            <div className="d-flex align-items-center mb-5" style={{ gap: '20px' }}>
+            <div className="d-flex align-items-center mb-5">
               <div className="rounded-circle bg-danger text-white text-center p-4" style={{ width: '100px', height: '100px', lineHeight: '60px' }}>
                 <strong>Cars</strong>
               </div>
               <div className="p-5 flex-grow-1" style={{ background: '#f8f9fa', borderRadius: '10px' }}>
+                <div className='align-items-left'>
                 <h5 className="text-primary">Vehicles of {customer?.customer_first_name}</h5>
-                <input type="text" className="form-control" placeholder="No vehicle found" disabled />
+                <VehiclePerCustomer/>
+                </div>
                 <button className="btn btn-danger mt-3" onClick={() => setShowForm(true)}>ADD NEW VEHICLE</button>  {/* ✅ Click to Show Form */}
                 
                 {/* ✅ EDITED THIS: Move AddVehicleForm inside the Vehicles section */}

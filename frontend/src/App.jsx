@@ -29,6 +29,7 @@ import AddCustomer from './markup/pages/admin/AddCustomer';
 import CustomerSection from './markup/pages/admin/CustomerSection';
 import OrdersPage from './markup/pages/ordersPage/OrdersPage';
 import CreateNewOrderPage from './markup/pages/ordersPage/CreateNewOrderPage';
+import ServicesPage from './markup/pages/servicesPage/ServicesPage';
 
 
 
@@ -85,6 +86,13 @@ function App() {
           element={
             <PrivateAuthRoute roles={[2,3]}>
               <CreateNewOrderPage/>
+            </PrivateAuthRoute>
+          } />
+          {/* // service route */}
+          <Route path="/admin/services"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <ServicesPage />
             </PrivateAuthRoute>
           } />
         {/* // Add the Employees Route  */}

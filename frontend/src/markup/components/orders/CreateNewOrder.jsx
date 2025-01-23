@@ -4,6 +4,7 @@ import { FaHandPointer, FaEdit, FaTimesCircle } from "react-icons/fa";
 import { useAuth } from "../../../context/AuthContext";
 import customerService from "../../../services/customer.services";
 import vehicleService from "../../../services/vehicles.services";
+import VehiclePerCustomer from "../vehicles/VehiclePerCustomer";
 
 const CreateNewOrder = () => {
   const { id } = useParams();
@@ -108,7 +109,8 @@ const CreateNewOrder = () => {
 
       {/* Vehicle Selection Section */}
       <div className="card shadow-sm p-3">
-        <h4 className="text-primary fw-bold mb-3">Choose a vehicle</h4>
+        <VehiclePerCustomer/>
+        {/* <h4 className="text-primary fw-bold mb-3">Choose a vehicle</h4>
         <div className="table-responsive">
           <table className="table table-bordered text-center align-middle">
             <thead className="table-light">
@@ -150,7 +152,7 @@ const CreateNewOrder = () => {
               )}
             </tbody>
           </table>
-        </div>
+        </div> */}
       </div>
     </div>
   );
