@@ -39,9 +39,22 @@ const getVehicles = async (token, customer_id) => {
   const response = await fetch(`${api_url}/api/vehicles/${customer_id}`, requestOptions);
   return response;
 }
+const getSingleVehicle = async (token,vehicleId) => {
+  // console.log(token);
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    }
+  };
+  const response = await fetch(`${api_url}/api/vehicle/${vehicleId}`, requestOptions);
+  return response;
+}
 // Export the service
 const VehicleService = {
   addVehicle,
-  getVehicles
+  getVehicles,
+  getSingleVehicle,
 };
 export default VehicleService;

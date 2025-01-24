@@ -9,6 +9,8 @@ const vehicleController = require('../controllers/vehicle.controller');
 router.post("/api/vehicle", [authMiddleware.verifyToken, authMiddleware.isAdmin], vehicleController.addVehicle); 
 // Create a route to handle the get all vehicles request on get
 router.get("/api/vehicles/:customer_id", [authMiddleware.verifyToken], vehicleController.getVehicles);
+//create a route to handle songle vehihle request
+router.get("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.getSingleVehicle);
 
 
 

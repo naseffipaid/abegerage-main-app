@@ -30,6 +30,7 @@ import CustomerSection from './markup/pages/admin/CustomerSection';
 import OrdersPage from './markup/pages/ordersPage/OrdersPage';
 import CreateNewOrderPage from './markup/pages/ordersPage/CreateNewOrderPage';
 import ServicesPage from './markup/pages/servicesPage/ServicesPage';
+import OrderFormPage from './markup/pages/ordersPage/OrderFormPage';
 
 
 
@@ -86,6 +87,13 @@ function App() {
           element={
             <PrivateAuthRoute roles={[2,3]}>
               <CreateNewOrderPage/>
+            </PrivateAuthRoute>
+          } />
+           {/* //orderForm Page per customer per vehicle */}
+           <Route path="/order/:vehicleId"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <OrderFormPage/>
             </PrivateAuthRoute>
           } />
           {/* // service route */}

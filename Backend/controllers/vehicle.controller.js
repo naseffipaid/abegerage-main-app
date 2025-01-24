@@ -40,9 +40,29 @@ async function getVehicles(req, res, next) {
     });
   }
 }
+ // Create the getsingle vehicle controller 
+ async function getSingleVehicle(req, res, next) {
+  // extract vehicleId from the request params
+  const { vehicleId } = req.params;
+  // Call the getSinglevehicle method from the vehicle service 
+  const vehicle = await vehicleService.getSingleVehicle(vehicleId);
+  // console.log(employees);
+  if (!vehicle) {
+    res.status(400).json({
+      error: "Failed to get a vehicle!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: vehicle,
+    });
+  }
+}
   // Export the createEmployee controller 
   module.exports = {
     addVehicle,
-    getVehicles
+    getVehicles,
+    getSingleVehicle
+
     
   };

@@ -260,3 +260,37 @@
   .change-status {
     cursor: pointer;
   }
+  /* Ensures the service description does not touch the checkbox */
+.service-info {
+  max-width: 70%;
+  word-break: break-word;
+  padding-bottom: 5px; /* Space between text and line */
+}
+
+/* Horizontal line should be full width */
+.custom-horizontal-line {
+  width: 100%;
+  border-bottom: 3px solid lightgray;
+  margin-top: 5px;
+}
+
+/* Keeps the checkbox fixed to the top right */
+.service-checkbox {
+  align-self: start;
+}
+
+/* Custom checkbox styling */
+.service-checkbox input {
+  transform: scale(1.5);
+  border: 2px solid black;
+  width: 20px;
+  height: 20px;
+}
+.custome-container{
+  background: #f8f9fa;
+  box-shadow: whitesmoke;
+  width: 100%;
+  
+  
+
+}

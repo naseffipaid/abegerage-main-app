@@ -97,7 +97,7 @@ const VehiclePerCustomer = () => {
                     <td>{vehicle.vehicle_color}</td>
                     <td>{vehicle.vehicle_mileage}</td>
                     <td>
-                      <Link to="/select-vehicle" className="text-dark">
+                      <Link to={`/order/${vehicle.vehicle_id}`} className="text-dark">
                         <FaHandPointer style={{ cursor: "pointer" }} />
                       </Link>
                     </td>

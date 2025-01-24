@@ -35,7 +35,7 @@ async function addVehicle(vehicle) {
     // Return the customer object
     return vehiclesData;
 }
-// A function to get all customers
+// A function to get all vehicle
 async function getVehicles(customer_id) {
     // define query to get all vehicles by customer_id
     const query = `SELECT * FROM customer_vehicle_info WHERE customer_id = ?`;
@@ -44,10 +44,34 @@ async function getVehicles(customer_id) {
     // return the vehicles
     return rows;
 }
+// A function to get single vehicle
+async function getSingleVehicle(vehicleId) {
+    const query = `
+        SELECT 
+            customer_vehicle_info.*, 
+            customer_identifier.customer_email, 
+            customer_identifier.customer_phone_number, 
+            customer_info.customer_first_name, 
+            customer_info.customer_last_name, 
+            customer_info.active_customer_status
+        FROM customer_vehicle_info
+        INNER JOIN customer_identifier ON customer_vehicle_info.customer_id = customer_identifier.customer_id
+        INNER JOIN customer_info ON customer_vehicle_info.customer_id = customer_info.customer_id
+        WHERE customer_vehicle_info.vehicle_id = ?`;
 
+    try {
+        const rows = await conn.query(query, [vehicleId]);  
+        console.log("Fetched Data:", rows);  // ✅ Debugging: Check the response
+        return rows;
+    } catch (error) {
+        console.error("Error fetching vehicle and customer details:", error);
+        throw error;
+    }
+}
 // Export the functions for use in the controller
 module.exports = {
     addVehicle,
-    getVehicles
+    getVehicles,
+    getSingleVehicle
     
 };
