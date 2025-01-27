@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useParams } from "react-router-dom";
-
+import { data, Link, useParams } from "react-router-dom";
+import { AiOutlineClose } from "react-icons/ai";
 import vehicleService from "../../../services/vehicles.services";
 import orderService from "../../../services/order.services";
 import serviceService from "../../../services/service.services"; // ✅ Fixed import path
 import { useAuth } from "../../../context/AuthContext";
 
+// generate hash for order hash
+const generateOrderHash = () => {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let hash = "";
+  for (let i = 0; i < 16; i++) {
+    hash += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return hash;
+};
 const OrderForm = () => {
   const { vehicleId } = useParams();
   const { employee } = useAuth();
@@ -97,41 +106,47 @@ useEffect(() => {
 
   const handleSubmit = async () => {
     if (!validateForm()) return;
-
+  
     if (!vehicleId) {
       setServerError("Vehicle ID is missing. Cannot place order.");
       return;
     }
-
+  
     const orderData = {
       employee_id: employee.employee_id,
       customer_id: vehicleCustomer?.customer_id,
       vehicle_id: vehicleId,
       active_order: 1,
+      order_hash: generateOrderHash(),
       order_total_price: price,
       additional_request: additionalRequest,
       service_id: selectedServices,
       service_completed: 0,
     };
-
+  
     try {
-      const response = await orderService.addOrder(orderData, token);
-      const data = await response.json();
-
-      if (response.ok) {
-        setOrderSuccess(true);
-        setServerError("");
-        setSelectedServices([]);
-        setAdditionalRequest("");
-        setPrice("");
-      } else {
-        setServerError(data.error || "Failed to add order.");
-      }
+      // ✅ Now `addOrder` returns parsed JSON directly
+      const data = await orderService.addOrder(orderData, token);
+  
+      console.log("API Response:", data); // ✅ Debugging
+  
+      // ✅ Order placed successfully (handle success)
+      setOrderSuccess(true);
+      setServerError(""); // ✅ Clear errors if successful
+      setSelectedServices([]);
+      setAdditionalRequest("");
+      setPrice("");
     } catch (error) {
-      setServerError("Network error. Please try again.");
+      console.error("Error submitting order:", error);
+  
+      // ✅ Display **exact** error message from backend
+      if (error.message) {
+        setServerError(error.message);
+      } else {
+        setServerError("An unexpected error occurred.");
+      }
     }
   };
-
   return (
     <div className="container mt-5 mx-auto px-5">
       {/* Header Section */}
@@ -149,7 +164,10 @@ useEffect(() => {
 
       {/* Customer Section */}
       {vehicleCustomer && (
-        <div className="card p-3 mb-4 shadow-sm">
+        <div className="card p-3 mb-4 shadow-sm position-relative">
+          <Link to="#" className="position-absolute top-0 end-0 p-1 bg-danger text-white me-3 mt-3 ">
+            <AiOutlineClose size={20} />
+          </Link>
           <h5>{vehicleCustomer.customer_first_name} {vehicleCustomer.customer_last_name}</h5>
           <p>Email: {vehicleCustomer.customer_email}</p>
           <p>Phone Number: {vehicleCustomer.customer_phone_number}</p>
@@ -159,7 +177,10 @@ useEffect(() => {
 
       {/* Vehicle Section */}
       {vehicleCustomer && (
-        <div className="card p-3 mb-4 shadow-sm">
+        <div className="card p-3 mb-4 shadow-sm position-relative">
+          <Link to="#" className="position-absolute top-0 end-0 p-1 bg-danger text-white me-3 mt-3 ">
+            <AiOutlineClose size={20} />
+          </Link>
           <h5>{vehicleCustomer.vehicle_make} {vehicleCustomer.vehicle_model}</h5>
           <p>Color: {vehicleCustomer.vehicle_color}</p>
           <p>Tag: {vehicleCustomer.vehicle_tag}</p>

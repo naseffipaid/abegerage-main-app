@@ -22,7 +22,6 @@ import Header from './markup/components/Header/Header'
 import Footer from './markup/components/Footer/Footer'
 import Unauthorized from './markup/pages/Unauthorized';
 import PrivateAuthRoute from './markup/components/Auth/PrivateAuthRoute';
-import Orders from './markup/pages/Orders';
 import Customer from './markup/pages/Customer';
 import Employee from './markup/pages/Employee';
 import AddCustomer from './markup/pages/admin/AddCustomer';
@@ -31,6 +30,8 @@ import OrdersPage from './markup/pages/ordersPage/OrdersPage';
 import CreateNewOrderPage from './markup/pages/ordersPage/CreateNewOrderPage';
 import ServicesPage from './markup/pages/servicesPage/ServicesPage';
 import OrderFormPage from './markup/pages/ordersPage/OrderFormPage';
+import GetOrdersPage from './markup/pages/ordersPage/GetOrdersPage';
+import OrderDetailPage from './markup/pages/ordersPage/OrderDetailPage';
 
 
 
@@ -59,7 +60,13 @@ function App() {
         <Route path="/admin/orders"
           element={
             <PrivateAuthRoute roles={[1, 2, 3]}>
-              <Orders />
+              <GetOrdersPage/>
+            </PrivateAuthRoute>
+          } />
+          <Route path="/order/:orderHash"
+          element={
+            <PrivateAuthRoute roles={[1, 2, 3]}>
+              <OrderDetailPage editButton = {false}/>
             </PrivateAuthRoute>
           } />
         <Route path="/admin/customers"
@@ -90,7 +97,7 @@ function App() {
             </PrivateAuthRoute>
           } />
            {/* //orderForm Page per customer per vehicle */}
-           <Route path="/order/:vehicleId"
+           <Route path="/orders/:vehicleId"
           element={
             <PrivateAuthRoute roles={[2,3]}>
               <OrderFormPage/>

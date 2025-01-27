@@ -9,7 +9,7 @@ const NewOrders = () => {
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   const { employee } = useAuth();
   let token = employee ? employee.employee_token : null;

@@ -290,7 +290,10 @@
   background: #f8f9fa;
   box-shadow: whitesmoke;
   width: 100%;
-  
-  
-
+}
+/* .list-group-item:last-child {
+  border-bottom: 2px solid red;
+} */
+.card:last-child{
+  border-bottom: 2px solid red;
 }
