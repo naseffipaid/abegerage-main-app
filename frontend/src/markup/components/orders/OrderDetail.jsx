@@ -210,11 +210,11 @@
 // export default OrderDetail;
 // deep seek result 
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useAuth } from "../../../context/AuthContext";
 import orderService from "../../../services/order.services";
-import { ClipLoader } from "react-spinners"; // Import the spinner
+import { ClipLoader } from "react-spinners";
 
 // Helper function to get status details
 const getStatusDetails = (status) => {
@@ -223,6 +223,8 @@ const getStatusDetails = (status) => {
       return { text: "In progress", className: "badge bg-warning text-white" };
     case 1:
       return { text: "Completed", className: "badge bg-success text-white" };
+    case null:
+      return { text: "Received", className: "badge bg-secondary text-white" };  
     default:
       return { text: "Received", className: "badge bg-secondary text-white" };
   }
@@ -235,6 +237,8 @@ const OrderDetail = ({ editButton }) => {
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedStatus, setSelectedStatus] = useState({});
+  const [sucess, setSucess] = useState({});
   const { employee } = useAuth();
   const token = employee?.employee_token;
 
@@ -289,10 +293,32 @@ const OrderDetail = ({ editButton }) => {
     setApiError(true);
   };
 
+  const handleServiceStatusUpdate = async (serviceId) => {
+    try {
+      const newStatus = parseInt(selectedStatus[serviceId], 10);
+      const response = await orderService.updateServiceStatus(token, orderHash, serviceId, newStatus);
+  
+      if (response.ok) {
+        setServices((prevServices) =>
+          prevServices.map((service) =>
+            service.service_id === serviceId ? { ...service, service_completed: newStatus } : service
+          )
+        );
+        
+        setSucess(prev => ({ ...prev, [serviceId]: "Service status updated successfully" })); 
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to update service status:", errorData.error);
+      }
+    } catch (error) {
+      console.error("Error updating service status:", error);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="container py-5 d-flex justify-content-center align-items-center">
-        <ClipLoader color="#007bff" size={50} /> {/* Use ClipLoader for loading state */}
+        <ClipLoader color="#007bff" size={50} />
       </div>
     );
   }
@@ -313,105 +339,90 @@ const OrderDetail = ({ editButton }) => {
     );
   }
 
-  const {
-    customer_first_name,
-    customer_last_name,
-    customer_email,
-    customer_phone_number,
-    active_customer_status,
-    vehicle_make,
-    vehicle_model,
-    vehicle_year,
-    vehicle_tag,
-    vehicle_mileage,
-    vehicle_color,
-    additional_request,
-    additional_requests_completed,
-  } = order;
-
   return (
     <div className="container py-5">
       <div className="card shadow-lg p-4">
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="fw-bold">
-            {customer_first_name} {customer_last_name}
+            {order.customer_first_name} {order.customer_last_name}
           </h2>
           <span className={getStatusDetails(order.order_status).className}>
             {getStatusDetails(order.order_status).text}
           </span>
         </div>
-        <p className="text-muted">You can track the progress of your order using this page.</p>
 
         <div className="row g-3">
           <div className="col-md-6">
             <div className="card p-3">
               <h5 className="text-uppercase text-secondary">Customer</h5>
               <p className="fw-semibold">
-                {customer_first_name} {customer_last_name}
+                {order.customer_first_name} {order.customer_last_name}
               </p>
-              <p>Email: {customer_email}</p>
-              <p>Phone: {customer_phone_number}</p>
-              <p>Active Customer: {active_customer_status === 1 ? "Yes" : "No"}</p>
+              <p>Email: {order.customer_email}</p>
+              <p>Phone: {order.customer_phone_number}</p>
+              <p>Active Customer: {order.active_customer_status === 1 ? "Yes" : "No"}</p>
             </div>
           </div>
+
           <div className="col-md-6">
             <div className="card p-3">
               <h5 className="text-uppercase text-secondary">Car in Service</h5>
               <p className="fw-semibold">
-                {vehicle_make} {vehicle_model} ({vehicle_year})
+                {order.vehicle_make} {order.vehicle_model} ({order.vehicle_year})
               </p>
-              <p>Vehicle Tag: {vehicle_tag}</p>
-              <p>Vehicle Mileage: {vehicle_mileage}</p>
-              <p>Vehicle Color: {vehicle_color}</p>
+              <p>Vehicle Tag: {order.vehicle_tag}</p>
+              <p>Vehicle Mileage: {order.vehicle_mileage}</p>
+              <p>Vehicle Color: {order.vehicle_color}</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-4">
-          <h4 className="fw-bold">Requested Services</h4>
-          <ul className="list-group mt-3">
-            {services.map((service, index) => (
-              <li
-                key={index}
-                className="list-group-item d-flex justify-content-between align-items-start flex-column flex-md-row"
-              >
-                <div className="flex-grow-1">
-                  <h6 className="fw-semibold mb-1">{service.service_name}</h6>
-                  <p className="mb-0 text-muted text-wrap service-description">
-                    {service.service_description}
-                  </p>
-                </div>
-                <span className={getStatusDetails(service.service_completed).className}>
-                  {editButton ? (
-                    <Link to="/">{getStatusDetails(service.service_completed).text}</Link>
-                  ) : (
-                    getStatusDetails(service.service_completed).text
+        <h4 className="fw-bold mt-4">Requested Services</h4>
+        <ul className="list-group mt-3">
+          {services.map((service) => (
+            <li key={service.service_id} className="list-group-item d-flex justify-content-between align-items-center">
+              <div className="d-flex flex-column text-start">
+                <span className="fw-semibold">{service.service_name}</span>
+                <small className="text-muted">{service.service_description}</small>
+              </div>
+              {editButton ? (
+                <div className="d-flex flex-column align-items-center">
+                  {/* ✅ Success message slightly above select button */}
+                  {sucess[service.service_id] && (
+                    <small className="text-success text-center mb-1">{sucess[service.service_id]}</small>
                   )}
-                </span>
-              </li>
-            ))}
-          </ul>
+                  <div className="d-flex align-items-center">
+                    <select
+                      className="form-select form-select-sm w-auto mx-2"
+                      value={selectedStatus[service.service_id] || service.service_completed}
+                      onChange={(e) => {
+                        setSelectedStatus((prev) => ({
+                          ...prev,
+                          [service.service_id]: e.target.value,
+                        }));
+                        setSucess(prev => ({ ...prev, [service.service_id]: "" }));
+                      }}
+                    >
+                      <option value="0">In Progress</option>
+                      <option value="1">Completed</option>
+                    </select>
 
-          {additional_request && (
-            <ul className="list-group mt-3">
-              <li className="list-group-item d-flex justify-content-between align-items-start flex-column flex-md-row">
-                <div className="flex-grow-1">
-                  <h6 className="fw-semibold mb-1">Additional Request</h6>
-                  <p className="mb-0 text-muted text-wrap service-description">
-                    {additional_request}
-                  </p>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => handleServiceStatusUpdate(service.service_id)}
+                    >
+                      Update
+                    </button>
+                  </div>
                 </div>
-                <span className={getStatusDetails(additional_requests_completed ?? 0).className}>
-                  {editButton ? (
-                    <Link to="/">{getStatusDetails(additional_requests_completed ?? 0).text}</Link>
-                  ) : (
-                    getStatusDetails(additional_requests_completed ?? 0).text
-                  )}
+              ) : (
+                <span className={getStatusDetails(service.service_completed).className}>
+                  {getStatusDetails(service.service_completed).text}
                 </span>
-              </li>
-            </ul>
-          )}
-        </div>
+              )}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
@@ -419,10 +430,6 @@ const OrderDetail = ({ editButton }) => {
 
 OrderDetail.propTypes = {
   editButton: PropTypes.bool,
-};
-
-OrderDetail.defaultProps = {
-  editButton: false,
 };
 
 export default OrderDetail;

@@ -8,7 +8,6 @@ import loginService from '../../../services/login.services';
 // Import the custom context hook 
 import { useAuth } from '../../../context/AuthContext';
 
-
 function Header() {
   // Use the custom hook to access the data in the context 
   const { isLogged, setIsLogged, employee } = useAuth();
@@ -38,7 +37,7 @@ function Header() {
                     <div className="phone-number"><strong>Welcome {employee?.employee_first_name}</strong></div>
                   </div>
                 ) : (
-                  <div className="phone-number">Schedule Appointment: <strong>1800 456 7890   </strong> </div>
+                  <div className="phone-number">Schedule Appointment: <strong>1800 456 7890</strong> </div>
                 )}
               </div>
             </div>
@@ -58,13 +57,15 @@ function Header() {
                   <nav className="main-menu navbar-expand-md navbar-light">
                     <div className="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
                       <ul className="navigation">
-                        <li className="dropdown"><a href="/">Home</a>
-                        </li>
-                        <li className="dropdown"><a href="/about">About Us</a>
-                        </li>
-                        <li className="dropdown"><a href="/services">Services</a>
-                        </li>
+                        <li className="dropdown"><Link to="/">Home</Link></li>
+                        <li className="dropdown"><a href="/about">About Us</a></li>
+                        <li className="dropdown"><a href="/services">Services</a></li>
                         <li><a href="/contact">Contact Us</a></li>
+
+                        {/* ✅ Added Admin & Check Status Links */}
+                        <li><a href="/admin">Admin</a></li>
+                        <li><a href="/check-status">Check Status</a></li>
+
                       </ul>
                     </div>
                   </nav>
@@ -116,9 +117,7 @@ function Header() {
               <img src="assets/images/logo-two.png" alt=""
                 title="" /></a></div>
             <div className="menu-outer">
-
             </div>
-
           </nav>
         </div>
 
@@ -131,4 +130,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default Header

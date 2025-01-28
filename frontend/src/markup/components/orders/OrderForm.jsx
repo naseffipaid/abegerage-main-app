@@ -121,7 +121,7 @@ useEffect(() => {
       order_total_price: price,
       additional_request: additionalRequest,
       service_id: selectedServices,
-      service_completed: 0,
+      service_completed: null,
     };
   
     try {

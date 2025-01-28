@@ -133,10 +133,10 @@ const GetAllOrders = () => {
                   </span>
                 </td>
                 <td className="align-middle">
-                  <Link href="#" className="text-dark me-2">
+                  <Link to={`/order/edit/${order.order_hash}`} className="text-dark me-2">
                     <FaEdit size={18} />
                   </Link>
-                  <Link href to={`/order/${order.order_hash}`} className="text-dark">
+                  <Link to={`/order/${order.order_hash}`} className="text-dark">
                     <FaExternalLinkAlt size={18} />
                   </Link>
                 </td>

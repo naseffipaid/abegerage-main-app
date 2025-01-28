@@ -3,7 +3,7 @@
 import { Routes, Route } from 'react-router-dom'
 
 //import the page components
-import Home from './markup/pages/Home'
+import Home from './markup/pages/HomePage'
 import Login from './markup/pages/Login'
 import AddEmployee from './markup/pages/admin/AddEmployee'
 
@@ -32,6 +32,8 @@ import ServicesPage from './markup/pages/servicesPage/ServicesPage';
 import OrderFormPage from './markup/pages/ordersPage/OrderFormPage';
 import GetOrdersPage from './markup/pages/ordersPage/GetOrdersPage';
 import OrderDetailPage from './markup/pages/ordersPage/OrderDetailPage';
+import HomePage from './markup/pages/HomePage';
+import CheckStatusPage from './markup/pages/CheckStatusPage';
 
 
 
@@ -63,10 +65,18 @@ function App() {
               <GetOrdersPage/>
             </PrivateAuthRoute>
           } />
+          {/* get a single order */}
           <Route path="/order/:orderHash"
           element={
             <PrivateAuthRoute roles={[1, 2, 3]}>
               <OrderDetailPage editButton = {false}/>
+            </PrivateAuthRoute>
+          } />
+          {/* edit order */}
+          <Route path="/order/edit/:orderHash"
+          element={
+            <PrivateAuthRoute roles={[2, 3]}>
+              <OrderDetailPage editButton = {true}/>
             </PrivateAuthRoute>
           } />
         <Route path="/admin/customers"
@@ -112,6 +122,10 @@ function App() {
           } />
         {/* // Add the Employees Route  */}
         <Route path="/admin/employees" element={<Employee />} />
+        {/* // Add the Home Route  */}
+        <Route path="/" element={<HomePage />} />
+        {/* // check status page for the customer  */}
+        <Route path="/check-status" element={<CheckStatusPage />} />
       </Routes>
       <Footer />
     </>

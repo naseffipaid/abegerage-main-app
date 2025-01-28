@@ -61,10 +61,32 @@ async function getorders(req, res, next) {
     });
   }
 }
+async function updateServiceStatus(req, res) {
+  try {
+    const { orderHash } = req.params;
+    const { service_id, service_completed } = req.body;
+
+    if (!service_id || service_completed === undefined) {
+      return res.status(400).json({ error: "Missing service_id or service_completed" });
+    }
+
+    const result = await orderService.updateServiceStatus(orderHash, service_id, service_completed);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to update service status." });
+    }
+
+    return res.status(200).json({ success: true, message: "Service status updated successfully." });
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
   // Export the createEmployee controller 
   module.exports = {
     addOrder,
     getorders,
-    getSingleOrder
+    getSingleOrder, 
+    updateServiceStatus
     
   };

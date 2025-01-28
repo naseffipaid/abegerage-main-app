@@ -151,58 +151,6 @@ VALUES ('Employee'), ('Manager'), ('Admin');
 -- INSERT INTO employee_role (employee_id, company_role_id)
 -- VALUES (1, 3); 
 
--- Customers tables  
-CREATE TABLE IF NOT EXISTS `customer_identifier` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_email` varchar(255) NOT NULL,
-  `customer_phone_number` varchar(255) NOT NULL,
-  `customer_added_date` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `customer_hash` varchar(255) NOT NULL,
-  PRIMARY KEY (customer_id),
-  UNIQUE (customer_email)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS `customer_info` (
-  `customer_info_id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) NOT NULL, 
-  `customer_first_name` varchar(255) NOT NULL,
-  `customer_last_name` varchar(255) NOT NULL,
-  `active_customer_status` int(11) NOT NULL,
-  PRIMARY KEY (customer_info_id),
-  FOREIGN KEY (customer_id) REFERENCES customer_identifier(customer_id)
-) ENGINE=InnoDB;
-
-CREATE TABLE IF NOT EXISTS `customer_vehicle_info` (
-  `vehicle_id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_id` int(11) NOT NULL, 
-  `vehicle_year` int(11) NOT NULL,
-  `vehicle_make` varchar(255) NOT NULL,
-  `vehicle_model` varchar(255) NOT NULL,
-  `vehicle_type` varchar(255) NOT NULL,
-  `vehicle_mileage` int(11) NOT NULL, 
-  `vehicle_tag` varchar(255) NOT NULL,
-  `vehicle_serial` varchar(255) NOT NULL,
-  `vehicle_color` varchar(255) NOT NULL,
-  PRIMARY KEY (vehicle_id),
-  FOREIGN KEY (customer_id) REFERENCES customer_identifier(customer_id)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `common_services` (
-  `service_id` int(11) NOT NULL AUTO_INCREMENT,
-  `service_name` varchar(255) NOT NULL,
-  `service_description` TEXT,
-  PRIMARY KEY (service_id)
-) ENGINE=InnoDB;
-
-
-CREATE TABLE IF NOT EXISTS `employee_pass` (
-  `employee_pass_id` int(11) NOT NULL AUTO_INCREMENT,
-  `employee_id` int(11) NOT NULL,
-  `employee_password_hashed` varchar(255) NOT NULL,
-  PRIMARY KEY (employee_pass_id),
-  FOREIGN KEY (employee_id) REFERENCES employee(employee_id)
-) ENGINE=InnoDB;
 
 -- Order tables  
 CREATE TABLE IF NOT EXISTS `orders` (
@@ -219,19 +167,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   FOREIGN KEY (vehicle_id) REFERENCES customer_vehicle_info(vehicle_id)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `order_info` (
-  `order_info_id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `order_total_price` int(11) NOT NULL,
-  `estimated_completion_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
-  `completion_date` DATETIME,
-  `additional_request` TEXT,
-  `notes_for_internal_use` TEXT,
-  `notes_for_customer` TEXT,
-  `additional_requests_completed` int(11) NOT NULL,
-  PRIMARY KEY (order_info_id),
-  FOREIGN KEY (order_id) REFERENCES orders(order_id)
-) ENGINE=InnoDB;
+;
 
 CREATE TABLE IF NOT EXISTS `order_services` (
   `order_service_id` int(11) NOT NULL AUTO_INCREMENT,

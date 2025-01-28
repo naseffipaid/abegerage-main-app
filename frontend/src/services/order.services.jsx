@@ -61,11 +61,51 @@ const getSingleOrder = async (token,orderHash) => {
   const response = await fetch(`${api_url}/api/order/${orderHash}`, requestOptions);
   return response;
 }
+const getSingleOrderCustomer = async (orderHash) => {
+  // console.log(token);
+  const requestOptions = {
+    method: 'GET',
+  };
+  const response = await fetch(`${api_url}/api/order/customer/${orderHash}`, requestOptions);
+  return response;
+}
+const updateServiceStatus = async (token, orderHash, serviceId, status) => {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify({
+      service_id: parseInt(serviceId, 10),  // ✅ Ensure service_id is included
+      service_completed: parseInt(status, 10)  // ✅ Ensure Integer
+    }),
+  };
+
+  try {
+    const response = await fetch(`${api_url}/api/order/${orderHash}`, requestOptions);
+    console.log("Raw Response:", response); // ✅ Debugging: Log response object
+
+    const responseText = await response.text(); // ✅ Read response as text (before parsing)
+    console.log("Response Text:", responseText); // ✅ Debugging: Log raw response
+
+    // ✅ Check if response is JSON
+    
+    return response;
+
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return { error: "Failed to update service status" };
+  }
+};
 // Export the service
 const OrderService = {
   addOrder,
   getAllOrders,
-  getSingleOrder
+  getSingleOrder,
+  updateServiceStatus,
+  getSingleOrderCustomer
+  
   
 };
 export default OrderService;

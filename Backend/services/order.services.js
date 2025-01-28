@@ -175,11 +175,53 @@ async function getSingleOrder(orderHash) {
     }
 }
 
+// ✅ Update Service Status (Uses serviceId)
+async function updateServiceStatus(orderHash, serviceId, service_completed) {
+    try {
+      // ✅ Step 1: Update `order_services` table
+      const query = `
+        UPDATE order_services 
+        SET service_completed = ? 
+        WHERE order_id = (SELECT order_id FROM orders WHERE order_hash = ?) 
+        AND service_id = ?`;
+      const result = await conn.query(query, [parseInt(service_completed, 10), orderHash, serviceId]);
+  
+      if (result.affectedRows === 0) {
+        return false; // ✅ No rows updated
+      }
+  
+      // ✅ Step 2: Check if all services are completed
+      const query1 = `
+        SELECT service_completed FROM order_services 
+        WHERE order_id = (SELECT order_id FROM orders WHERE order_hash = ?)`;
+      const serviceCompletionRows = await conn.query(query1, [orderHash]);
+  
+      // Ensure serviceCompletionRows is an array
+      const completionData = Array.isArray(serviceCompletionRows) ? serviceCompletionRows : [];
+  
+      // ✅ Determine new `order_status` value (1 = Completed, 0 = In Progress)
+      const isCompleted = completionData.every(row => row.service_completed === 1);
+      const orderStatus = isCompleted ? 1 : 0;
+  
+      // ✅ Step 3: Update `order_status` table
+      const query3 = `
+        UPDATE order_status 
+        SET order_status = ? 
+        WHERE order_id = (SELECT order_id FROM orders WHERE order_hash = ?)`;
+      await conn.query(query3, [orderStatus, orderHash]);
+  
+      return true; // ✅ Successfully updated
+    } catch (err) {
+      console.error("Error updating service status:", err);
+      return false;
+    }
+  }
 // Export the functions for use in the controller
 module.exports = {
     checkExistingOrder,
     addOrder,
     getOrders,
-    getSingleOrder
+    getSingleOrder,
+    updateServiceStatus
     
 };
