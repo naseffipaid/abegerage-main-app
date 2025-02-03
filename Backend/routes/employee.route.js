@@ -9,6 +9,10 @@ const employeeController = require('../controllers/employee.controller');
 router.post("/api/employee", employeeController.createEmployee); 
 // Create a route to handle the get all employees request on get
 router.get("/api/employees", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getAllEmployees);
+// Create a route to handle the get single employee request on get
+router.get("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getEmployee);
+// Create a route to handle update single employee request on put
+// router.get("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.updateEmployee);
 
 
 

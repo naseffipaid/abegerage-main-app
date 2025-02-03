@@ -47,7 +47,7 @@ function Header() {
           <div className="auto-container">
             <div className="inner-container">
               <div className="logo-box">
-                <div className="logo"><a href="/"><img src={logo} alt="" /></a>
+                <div className="logo"><Link to="/"><img src={logo} alt="" /></Link>
                 </div>
               </div>
               <div className="right-column">
@@ -58,13 +58,13 @@ function Header() {
                     <div className="collapse navbar-collapse show clearfix" id="navbarSupportedContent">
                       <ul className="navigation">
                         <li className="dropdown"><Link to="/">Home</Link></li>
-                        <li className="dropdown"><a href="/about">About Us</a></li>
-                        <li className="dropdown"><a href="/services">Services</a></li>
-                        <li><a href="/contact">Contact Us</a></li>
+                        <li className="dropdown"><Link to="/about">About Us</Link></li>
+                        <li className="dropdown"><Link to="/services">Services</Link></li>
+                        <li><Link to="/contact">Contact Us</Link></li>
 
                         {/* ✅ Added Admin & Check Status Links */}
-                        <li><a href="/admin">Admin</a></li>
-                        <li><a href="/check-status">Check Status</a></li>
+                        <li><Link to="/admin">Admin</Link></li>
+                        <li><Link to="/check-status">Check Status</Link></li>
 
                       </ul>
                     </div>
@@ -89,7 +89,7 @@ function Header() {
             <div className="auto-container">
               <div className="inner-container">
                 <div className="logo-box">
-                  <div className="logo"><a href="/"><img src="assets/images/custom/logo.png" alt="" /></a>
+                  <div className="logo"><Link to="/"><img src="assets/images/custom/logo.png" alt="" /></Link>
                   </div>
                 </div>
                 <div className="right-column">
@@ -101,7 +101,7 @@ function Header() {
                     </nav>
                   </div>
                   <div className="search-btn"></div>
-                  <div className="link-btn"><a href="/login" className="theme-btn btn-style-one">Login</a>
+                  <div className="link-btn"><Link to="/login" className="theme-btn btn-style-one">Login</Link>
                   </div>
                 </div>
               </div>
@@ -113,9 +113,9 @@ function Header() {
           <div className="close-btn"><span className="icon flaticon-remove"></span></div>
 
           <nav className="menu-box">
-            <div className="nav-logo"><a href="index.html">
+            <div className="nav-logo"><Link to="index.html">
               <img src="assets/images/logo-two.png" alt=""
-                title="" /></a></div>
+                title="" /></Link></div>
             <div className="menu-outer">
             </div>
           </nav>

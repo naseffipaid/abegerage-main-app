@@ -48,8 +48,28 @@ async function getAllEmployees(req, res, next) {
     });
   }
 }
+async function getEmployee(req, res, next) {
+    
+    const {employeeId } = req.params
+    const employee = await employeeService.getEmployee(employeeId);
+    console.log("Database response:", employee); // Log the database response
+
+    // Check if employee data is valid
+    if (!employee || Object.keys(employee).length === 0) {
+        console.error("employee not found!"); // Debugging log
+        return res.status(404).json({ error: "employee not found!" });
+    }
+
+    console.log("Returning employee data to client...");
+    return res.status(200).json({
+        status: "success",
+        data: employee,
+    });
+}
+
   // Export the createEmployee controller 
   module.exports = {
     createEmployee,
-    getAllEmployees
+    getAllEmployees,
+    getEmployee
   };

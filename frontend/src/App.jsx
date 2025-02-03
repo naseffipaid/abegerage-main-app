@@ -34,6 +34,12 @@ import GetOrdersPage from './markup/pages/ordersPage/GetOrdersPage';
 import OrderDetailPage from './markup/pages/ordersPage/OrderDetailPage';
 import HomePage from './markup/pages/HomePage';
 import CheckStatusPage from './markup/pages/CheckStatusPage';
+import AdminPage from './markup/pages/admin/AdminPage';
+import AboutUsPage from './markup/pages/AboutUsPage';
+import ServicesForPage from './markup/pages/ServicesForPage';
+import ServiceDetail from './markup/components/static/ServiceDetail';
+import ContactUsPage from './markup/pages/ContactUsPage';
+import EditEmployeePage from './markup/pages/admin/EditEmployeePage';
 
 
 
@@ -47,16 +53,24 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        {/* Admin route */}
+        <Route path="/admin"
+          element={
+            <PrivateAuthRoute roles={[1, 2, 3]}>
+              <AdminPage/>
+            </PrivateAuthRoute>
+          } />
         <Route path="/admin/add-employee"
           element={
             <PrivateAuthRoute roles={[3]}>
               <AddEmployee />
             </PrivateAuthRoute>
           } />
-          <Route path="/admin/add-customer"
+          {/* edit employee */}
+          <Route path="/editEmployee/:employeeId"
           element={
             <PrivateAuthRoute roles={[3]}>
-              <AddCustomer />
+              <EditEmployeePage />
             </PrivateAuthRoute>
           } />
         <Route path="/admin/orders"
@@ -126,6 +140,14 @@ function App() {
         <Route path="/" element={<HomePage />} />
         {/* // check status page for the customer  */}
         <Route path="/check-status" element={<CheckStatusPage />} />
+         {/* // About page for the customer  */}
+         <Route path="/about" element={<AboutUsPage/>} />
+         {/* // services  */}
+         <Route path="/services" element={<ServicesForPage/>} />
+         {/* // services Detail  */}
+         <Route path="/serviceDetail" element={<ServiceDetail/>} />
+         {/* // Contact Us  */}
+         <Route path="/contact" element={<ContactUsPage/>} />
       </Routes>
       <Footer />
     </>
