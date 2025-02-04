@@ -93,6 +93,13 @@ function App() {
               <OrderDetailPage editButton = {true}/>
             </PrivateAuthRoute>
           } />
+          {/* add customer route */}
+          <Route path="/admin/add-customer"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <AddCustomer />
+            </PrivateAuthRoute>
+          } />
         <Route path="/admin/customers"
           element={
             <PrivateAuthRoute roles={[2,3]}>
