@@ -66,10 +66,32 @@ async function getEmployee(req, res, next) {
         data: employee,
     });
 }
+async function updateEmployee(req, res) {
+  try {
+    const { employeeId } = req.params;
+    const updateData = req.body;
+
+    if (!updateData) {
+      return res.status(400).json({ error: "Missing employee_id " });
+    }
+
+    const result = await employeeService.updateEmployee(employeeId, updateData);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to update employee." });
+    }
+
+    return res.status(200).json({ success: true, message: "Employee updated successfully." });
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
 
   // Export the createEmployee controller 
   module.exports = {
     createEmployee,
     getAllEmployees,
-    getEmployee
+    getEmployee,
+    updateEmployee
   };

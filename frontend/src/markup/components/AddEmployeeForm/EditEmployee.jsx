@@ -9,6 +9,7 @@ function EditEmployee() {
   const [employee_first_name, setFirstName] = useState(''); // Initialize with empty string
   const [employee_last_name, setLastName] = useState(''); // Initialize with empty string
   const [employee_phone, setPhoneNumber] = useState(''); // Initialize with empty string
+  const [active_employee, setActiveEmployee] = useState()
   const [company_role_name, setCompany_role_name] = useState(1);
   const [serverError, setServerError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -32,6 +33,7 @@ function EditEmployee() {
             setLastName(data.data.employee_last_name || '');
             setPhoneNumber(data.data.employee_phone || '');
             setCompany_role_name(data.data.company_role_id || 1); // Default role if missing
+            setActiveEmployee(data.data.active_employee)
           } else if(data && data.error) {
             setServerError(data.error)
           } else {
@@ -54,6 +56,7 @@ function EditEmployee() {
       employee_last_name,
       employee_phone,
       company_role_name,
+      active_employee,
     };
 
     employeeService.updateEmployee(employeeId, updatedData, token)
@@ -96,6 +99,9 @@ function EditEmployee() {
                     </div>
                     <div className="form-group col-md-12">
                       <input type="text" value={employee_phone} onChange={e => setPhoneNumber(e.target.value)} placeholder="Employee phone (555-555-5555)" required />
+                    </div>
+                    <div className="form-group col-md-12">
+                      <input type="text" value={active_employee} onChange={e => setActiveEmployee(e.target.value)} placeholder="Active Employee" required />
                     </div>
                     <div className="form-group col-md-12">
                       <select value={company_role_name} onChange={e => setCompany_role_name(e.target.value)} className="custom-select-box">

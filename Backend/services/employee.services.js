@@ -86,11 +86,61 @@ async function getEmployee(employeeId) {
         return null;
     }
 }
+  async function updateEmployee(employeeId, updateData) {
+    try {
+        const { employee_email, employee_first_name, employee_last_name, employee_phone, company_role_name, active_employee } = updateData;
+
+        const employeeQuery = `
+            UPDATE employee 
+            SET employee_email = ?,
+               active_employee = ?
+            WHERE employee_id = ?`;
+          // *** KEY CHANGE: Convert active_employee to a number ***
+        const activeEmployeeValue = Number(active_employee) 
+
+        const employeeResult = await conn.query(employeeQuery, [employee_email, activeEmployeeValue, employeeId]);
+
+        if (employeeResult.affectedRows === 0) {
+            return false;
+        }
+
+        const employeeInfoQuery = `
+            UPDATE employee_info 
+            SET employee_first_name = ?, 
+                employee_last_name = ?, 
+                employee_phone = ?
+            WHERE employee_id = ?`;
+        const employeeInfoResult = await conn.query(employeeInfoQuery, [employee_first_name, employee_last_name, employee_phone, employeeId]);
+
+        if (employeeInfoResult.affectedRows === 0) {
+            return false;
+        }
+
+        // Update employee_role table (Simplified - no role check)
+        const employeeRoleUpdateQuery = `
+            UPDATE employee_role
+            SET company_role_id = ?
+            WHERE employee_id = ?`;
+        const employeeRoleUpdateResult = await conn.query(employeeRoleUpdateQuery, [company_role_name, employeeId]);
+
+        if (employeeRoleUpdateResult.affectedRows === 0) {
+            return false;
+        }
+
+        return true;
+
+    } catch (err) {
+        console.error("Error updating employee:", err);
+        return false;
+    }
+}
   // Export the functions for use in the controller
   module.exports = {
     checkIfEmployeeExists,
     createEmployee,
     getEmployeeByEmail,
     getAllEmployees,
-    getEmployee
+    getEmployee,
+    updateEmployee,
+    updateEmployee
   }; 

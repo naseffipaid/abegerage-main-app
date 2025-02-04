@@ -12,7 +12,7 @@ router.get("/api/employees", [authMiddleware.verifyToken, authMiddleware.isAdmin
 // Create a route to handle the get single employee request on get
 router.get("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getEmployee);
 // Create a route to handle update single employee request on put
-// router.get("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.updateEmployee);
+router.put("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.updateEmployee);
 
 
 

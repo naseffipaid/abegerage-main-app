@@ -232,13 +232,6 @@ CREATE TABLE IF NOT EXISTS `company_roles` (
   UNIQUE (company_role_name)
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `common_services` (
-  `service_id` int(11) NOT NULL AUTO_INCREMENT,
-  `service_name` varchar(255) NOT NULL,
-  `service_description` TEXT,
-  PRIMARY KEY (service_id)
-) ENGINE=InnoDB;
-
 -- Employee tables 
 CREATE TABLE IF NOT EXISTS `employee` (
   `employee_id` int(11) NOT NULL AUTO_INCREMENT,
