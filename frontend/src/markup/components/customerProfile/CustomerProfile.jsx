@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useAuth } from '../../../context/AuthContext';
 import customerService from '../../../services/customer.services';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import AddVehicleForm from '../vehicles/AddVehicleForm';  // ✅ Import AddVehicleForm
 import VehiclePerCustomer from '../vehicles/VehiclePerCustomer';
 
@@ -70,7 +70,7 @@ const CustomerProfile = () => {
                 <p><strong>Email:</strong> {customer?.customer_email}</p>
                 <p><strong>Phone Number:</strong> {customer?.customer_phone_number}</p>
                 <p><strong>Active Customer:</strong> {customer.active_customer_status ? 'Yes' : 'No'}</p>
-                <p><strong>Edit Customer Info:</strong> <a href="#edit-customer" className="text-danger"><i className="bi bi-pencil-fill"></i></a></p>
+                <p><strong>Edit Customer Info:</strong> <Link to={`/editCustomer/${id}`} className="text-danger"><i className="bi bi-pencil-fill"></i></Link></p>
               </div>
             </div>
 

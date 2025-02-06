@@ -134,6 +134,38 @@ async function getEmployee(employeeId) {
         return false;
     }
 }
+async function deleteEmployee(employeeId) {
+  try {
+    // Delete from employee_role table FIRST
+    const employeeRoleDeleteResult = await conn.query("DELETE FROM employee_role WHERE employee_id = ?", [employeeId]);
+    if (employeeRoleDeleteResult.affectedRows === 0 ) { // Check if any rows were affected
+      return false; // Or handle as you see fit if no role is found
+    }
+
+    // Delete from employee_info table SECOND
+    const employeeInfoDeleteResult = await conn.query("DELETE FROM employee_info WHERE employee_id = ?", [employeeId]);
+      if (employeeInfoDeleteResult.affectedRows === 0) { // Check if any rows were affected
+        return false; // Or handle as you see fit if no info is found
+      }
+    // Delete from employee_pass table THIRD
+    const employeePassDeleteResult = await conn.query("DELETE FROM employee_pass WHERE employee_id = ?", [employeeId]);
+      if (employeePassDeleteResult.affectedRows === 0) { // Check if any rows were affected
+        return false; // Or handle as you see fit if no pass is found
+      }
+
+    // Delete from employee table LAST
+    const employeeDeleteResult = await conn.query("DELETE FROM employee WHERE employee_id = ?", [employeeId]);
+    if (employeeDeleteResult.affectedRows === 0) {
+      return false;
+    }
+
+    return true; // Return true only if all deletions are successful
+
+  } catch (err) {
+    console.error("Error deleting employee:", err);
+    return false;
+  }
+}
   // Export the functions for use in the controller
   module.exports = {
     checkIfEmployeeExists,
@@ -142,5 +174,5 @@ async function getEmployee(employeeId) {
     getAllEmployees,
     getEmployee,
     updateEmployee,
-    updateEmployee
+    deleteEmployee
   }; 

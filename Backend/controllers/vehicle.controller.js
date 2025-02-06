@@ -58,11 +58,53 @@ async function getVehicles(req, res, next) {
     });
   }
 }
+async function updateVehicle(req, res) {
+  try {
+    const { vehicleId } = req.params;
+    const updateData = req.body;
+
+    if (!updateData) {
+      return res.status(400).json({ error: "Missing vehicle_id " });
+    }
+
+    const result = await vehicleService.updateVehicle(vehicleId, updateData);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to update vehicle." });
+    }
+
+    return res.status(200).json({ success: true, message: "Vehicle updated successfully." });
+  } catch (error) {
+    console.error("Error updating vehicle status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
+async function deleteVehicle(req, res) {
+  try {
+    const { vehicleId } = req.params;
+
+    if (!vehicleId) {
+      return res.status(400).json({ error: "Missing vehicle_id " });
+    }
+
+    const result = await vehicleService.deleteVehicle(vehicleId);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to delete vehicle." });
+    }
+
+    return res.status(200).json({ success: true, message: "vehicle deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting vehicle status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
+
   // Export the createEmployee controller 
   module.exports = {
     addVehicle,
     getVehicles,
-    getSingleVehicle
-
-    
+    getSingleVehicle,
+    updateVehicle,
+    deleteVehicle
   };

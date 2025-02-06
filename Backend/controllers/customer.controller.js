@@ -68,9 +68,53 @@ async function getAllCustomers(req, res, next) {
         data: customer,
     });
 }
+async function updateCustomer(req, res) {
+  try {
+    const { customerId } = req.params;
+    const updateData = req.body;
+
+    if (!updateData) {
+      return res.status(400).json({ error: "Missing customer_id " });
+    }
+
+    const result = await customerService.updateCustomer(customerId, updateData);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to update customer." });
+    }
+
+    return res.status(200).json({ success: true, message: "Customer updated successfully." });
+  } catch (error) {
+    console.error("Error updating customer status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
+async function deleteCustomer(req, res) {
+  try {
+    const { customerId } = req.params;
+
+    if (!customerId) {
+      return res.status(400).json({ error: "Missing customer_id " });
+    }
+
+    const result = await customerService.deleteCustomer(customerId);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to delete customer." });
+    }
+
+    return res.status(200).json({ success: true, message: "Customer deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting customer status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
+
   // Export the createEmployee controller 
   module.exports = {
     createCustomer,
     getAllCustomers,
-    getsingleCustomer
+    getsingleCustomer,
+    updateCustomer,
+    deleteCustomer
   };

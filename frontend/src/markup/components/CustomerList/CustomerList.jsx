@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from "../../../context/AuthContext";
 import { format } from 'date-fns';
 import customerService from "../../../services/customer.services";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
@@ -81,8 +82,13 @@ const CustomerList = () => {
                     <td>{format(new Date(customer.customer_added_date), 'MM-dd-yyyy | HH:mm')}</td>
                     <td>{customer.active_customer_status ? "Yes" : "No"}</td>
                     <td>
-                      <div className="edit-delete-icons">
-                        edit | delete
+                    <div className="edit-delete-icons d-flex gap-2"> {/* Added flexbox for spacing */}
+                        <Link to={`/editCustomer/${customer.customer_id}`} className="text-primary"> {/* Link to EditCustomer */}
+                          <FaEdit size={18} />
+                        </Link>
+                        <Link to={`/deleteCustomer/${customer.customer_id}`} className="text-danger"> {/* Link to DeleteCustomer */}
+                          <FaTrash size={18} />
+                        </Link>
                       </div>
                     </td>
                   </tr>

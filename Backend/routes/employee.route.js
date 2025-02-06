@@ -13,6 +13,8 @@ router.get("/api/employees", [authMiddleware.verifyToken, authMiddleware.isAdmin
 router.get("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.getEmployee);
 // Create a route to handle update single employee request on put
 router.put("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.updateEmployee);
+// Create a route to handle delete single employee request on delete
+router.delete("/api/employee/:employeeId", [authMiddleware.verifyToken, authMiddleware.isAdmin], employeeController.deleteEmployee);
 
 
 

@@ -87,11 +87,32 @@ async function updateEmployee(req, res) {
     return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
   }
 }
+async function deleteEmployee(req, res) {
+  try {
+    const { employeeId } = req.params;
+
+    if (!employeeId) {
+      return res.status(400).json({ error: "Missing employee_id " });
+    }
+
+    const result = await employeeService.deleteEmployee(employeeId);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to delete employee." });
+    }
+
+    return res.status(200).json({ success: true, message: "Employee deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting service status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
 
   // Export the createEmployee controller 
   module.exports = {
     createEmployee,
     getAllEmployees,
     getEmployee,
-    updateEmployee
+    updateEmployee,
+    deleteEmployee
   };

@@ -40,6 +40,13 @@ import ServicesForPage from './markup/pages/ServicesForPage';
 import ServiceDetail from './markup/components/static/ServiceDetail';
 import ContactUsPage from './markup/pages/ContactUsPage';
 import EditEmployeePage from './markup/pages/admin/EditEmployeePage';
+import DeleteEmployeePage from './markup/pages/admin/DeleteEmployeePage';
+import EditCustomerPage from './markup/pages/admin/EditCustomerPage';
+import DeleteCustomerPage from './markup/pages/admin/DeleteCustomerPage';
+import EditVehiclePage from './markup/pages/admin/EditVehiclePage';
+import DeleteVehiclePage from './markup/pages/admin/DeleteVehiclePage';
+import EditServicePage from './markup/pages/admin/EditServicePage';
+import DeleteServicePage from './markup/pages/admin/DeleteServicePage';
 
 
 
@@ -71,6 +78,13 @@ function App() {
           element={
             <PrivateAuthRoute roles={[3]}>
               <EditEmployeePage />
+            </PrivateAuthRoute>
+          } />
+          {/* delete employee */}
+          <Route path="/deleteEmployee/:employeeId"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <DeleteEmployeePage />
             </PrivateAuthRoute>
           } />
         <Route path="/admin/orders"
@@ -111,6 +125,48 @@ function App() {
           element={
             <PrivateAuthRoute roles={[2,3]}>
               <CustomerSection/>
+            </PrivateAuthRoute>
+          } />
+          {/* /edit single customer */}
+          <Route path="/editCustomer/:customerId"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <EditCustomerPage/>
+            </PrivateAuthRoute>
+          } />
+          {/* delete single customer */}
+          <Route path="/deleteCustomer/:customerId"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <DeleteCustomerPage/>
+            </PrivateAuthRoute>
+          } />
+          {/* edit single vehicle */}
+          <Route path="/editVehicle/:vehicleId"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <EditVehiclePage/>
+            </PrivateAuthRoute>
+          } />
+          {/* delete single vehicle */}
+          <Route path="/deleteVehicle/:vehicleId"
+          element={
+            <PrivateAuthRoute roles={[2,3]}>
+              <DeleteVehiclePage/>
+            </PrivateAuthRoute>
+          } />
+          {/*edit single service */}
+          <Route path="/editService/:serviceId"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <EditServicePage/>
+            </PrivateAuthRoute>
+          } />
+          {/*delete single service */}
+          <Route path="/deleteService/:serviceId"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <DeleteServicePage/>
             </PrivateAuthRoute>
           } />
           {/* // Add the order route */}

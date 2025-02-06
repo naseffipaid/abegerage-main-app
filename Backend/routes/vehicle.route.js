@@ -11,8 +11,10 @@ router.post("/api/vehicle", [authMiddleware.verifyToken, authMiddleware.isAdmin]
 router.get("/api/vehicles/:customer_id", [authMiddleware.verifyToken], vehicleController.getVehicles);
 //create a route to handle songle vehihle request
 router.get("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.getSingleVehicle);
-
-
+//create a route to handle update vehicle on put
+router.put("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.updateVehicle);
+//create a route to handle delete vehicle on delete
+router.delete("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.deleteVehicle);
 
 
 // Export the router

@@ -9,6 +9,11 @@ const serviceController = require('../controllers/service.controller');
 router.post("/api/service", [authMiddleware.verifyToken, authMiddleware.isAdmin], serviceController.addService); 
 // Create a route to handle the get all services request on get
 router.get("/api/services", [authMiddleware.verifyToken], serviceController.getservices);
-
+// Create a route to handle the get single service request on get
+router.get("/api/service/:serviceId", [authMiddleware.verifyToken], serviceController.getSingleService);
+//  Create a route to handle the update single service request on put
+router.put("/api/service/:serviceId", [authMiddleware.verifyToken], serviceController.updateService);
+//  Create a route to handle the delete single service on delete
+router.delete("/api/service/:serviceId", [authMiddleware.verifyToken], serviceController.deleteService);
 
 module.exports = router

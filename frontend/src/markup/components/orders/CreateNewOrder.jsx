@@ -94,14 +94,14 @@ const CreateNewOrder = () => {
                 </p>
                 <p className="mb-0">
                   <strong>Edit customer info:</strong>{" "}
-                  <Link to="/edit-customer" className="text-danger">
+                  <Link to={`/editCustomer/${id}`} className="text-danger">
                     <FaEdit />
                   </Link>
                 </p>
               </div>
-              <button className="btn btn-danger">
+              <Link to={`/deleteCustomer/${id}`} className="btn btn-danger">
                 <FaTimesCircle />
-              </button>
+              </Link>
             </div>
           </div>
         )

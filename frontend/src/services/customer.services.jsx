@@ -38,11 +38,35 @@ const getSingleCustomer = async (token,customer_id) => {
   const response = await fetch(`${api_url}/api/customer/${customer_id}`, requestOptions);
   return response;
 }
-
+const updateCustomer = async (customerId, formData, loggedInEmployeeToken) => {
+  const requestOptions = {
+      method: 'PUT',
+      headers: {
+          'Content-Type': 'application/json',
+          'x-access-token': loggedInEmployeeToken
+      },
+      body: JSON.stringify(formData),
+  };
+  const response = await fetch(`${api_url}/api/customer/${customerId}`, requestOptions);
+  return response;
+};
+const deleteCustomer = async (customerId, loggedInEmployeeToken) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': loggedInEmployeeToken
+    }
+  };
+  const response = await fetch(`${api_url}/api/customer/${customerId}`, requestOptions);
+  return response;
+};
 // Export all the functions 
 const customerService = {
   createCustomer,
   getAllCustomers,
-  getSingleCustomer
+  getSingleCustomer,
+  updateCustomer,
+  deleteCustomer
 }
 export default customerService; 

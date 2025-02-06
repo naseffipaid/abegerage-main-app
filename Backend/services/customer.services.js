@@ -95,11 +95,84 @@ async function getsingleCustomer(id) {
         return null;
     }
 }
+ async function updateCustomer(customerId, updateData) {
+    try {
+        const { customer_email, customer_first_name, customer_last_name, customer_phone_number, active_customer_status } = updateData;
+
+        const customerQuery = `
+            UPDATE customer_identifier 
+            SET customer_email = ?,
+               customer_phone_number = ?
+            WHERE customer_id = ?`;
+        const customerResult = await conn.query(customerQuery, [customer_email, customer_phone_number, customerId]);
+
+        if (customerResult.affectedRows === 0) {
+            return false;
+        }
+
+        const customerInfoQuery = `
+            UPDATE customer_info 
+            SET customer_first_name = ?, 
+                customer_last_name = ?, 
+                active_customer_status = ?
+            WHERE customer_id = ?`;
+        const customerInfoResult = await conn.query(customerInfoQuery, [customer_first_name, customer_last_name, active_customer_status, customerId]);
+
+        if (customerInfoResult.affectedRows === 0) {
+            return false;
+        }
+        return true;
+
+    } catch (err) {
+        console.error("Error updating customer:", err);
+        return false;
+    }
+}
+async function deleteCustomer(customerId) {
+    try {
+      // 1. Delete from order_status (FK: order_id)
+      const orderStatusDeleteResult = await conn.query("DELETE FROM order_status WHERE order_id IN (SELECT order_id FROM orders WHERE customer_id = ?)", [customerId]);
+  
+      // 2. Delete from order_services (FK: order_id)
+      const orderServicesDeleteResult = await conn.query("DELETE FROM order_services WHERE order_id IN (SELECT order_id FROM orders WHERE customer_id = ?)", [customerId]);
+  
+      // 3. Delete from order_info (FK: order_id)
+      const orderInfoDeleteResult = await conn.query("DELETE FROM order_info WHERE order_id IN (SELECT order_id FROM orders WHERE customer_id = ?)", [customerId]);
+  
+  
+      // 4. Delete from orders (FK: customer_id, vehicle_id, employee_id)
+      const ordersDeleteResult = await conn.query("DELETE FROM orders WHERE customer_id = ?", [customerId]);
+  
+  
+      // 5. Delete from customer_vehicle_info (FK: customer_id)
+      const customerVehicleDeleteResult = await conn.query("DELETE FROM customer_vehicle_info WHERE customer_id = ?", [customerId]);
+  
+  
+      // 6. Delete from customer_info (FK: customer_id)
+      const customerInfoDeleteResult = await conn.query("DELETE FROM customer_info WHERE customer_id = ?", [customerId]);
+  
+      // 7. Delete from customer_identifier (Primary Table)
+      const customerIdentifierDeleteResult = await conn.query("DELETE FROM customer_identifier WHERE customer_id = ?", [customerId]);
+  
+      if (customerIdentifierDeleteResult.affectedRows === 0) {
+        return false; // Customer not found in the main table
+      }
+  
+      return true; // All deletions successful
+  
+    } catch (err) {
+      console.error("Error deleting customer:", err);
+      return false;
+    }
+  }
+  
 // Export the functions for use in the controller
 module.exports = {
     checkIfCustomerExists,
     createCustomer,
     getCustomerByEmail,
     getAllCustomers,
-    getsingleCustomer
+    getsingleCustomer,
+    updateCustomer,
+    deleteCustomer
 };

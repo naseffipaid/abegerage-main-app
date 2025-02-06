@@ -100,9 +100,9 @@ function EditEmployee() {
                     <div className="form-group col-md-12">
                       <input type="text" value={employee_phone} onChange={e => setPhoneNumber(e.target.value)} placeholder="Employee phone (555-555-5555)" required />
                     </div>
-                    <div className="form-group col-md-12">
+                    {/* <div className="form-group col-md-12">
                       <input type="text" value={active_employee} onChange={e => setActiveEmployee(e.target.value)} placeholder="Active Employee" required />
-                    </div>
+                    </div> */}
                     <div className="form-group col-md-12">
                       <select value={company_role_name} onChange={e => setCompany_role_name(e.target.value)} className="custom-select-box">
                         <option value="1">Employee</option>
@@ -110,6 +110,18 @@ function EditEmployee() {
                         <option value="3">Admin</option>
                       </select>
                     </div>
+                    <div className="form-group col-md-12">
+                      <div className="form-check">
+                        <input
+                           className="form-check-input"
+                           type="checkbox"
+                           checked={active_employee === 1} // Check if active_employee is 1
+                           onChange={e => setActiveEmployee(e.target.checked ? 1 : 0)} // Set to 1 or 0
+                           id="activeEmployeeCheckbox"
+                         />
+                          <label className="form-check-label" htmlFor="activeEmployeeCheckbox">Active Employee</label>
+                        </div>
+                     </div>
                     <div className="form-group col-md-12">
                       <button className="theme-btn btn-style-one" type="submit"><span>Update Employee</span></button>
                     </div>

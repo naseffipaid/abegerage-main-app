@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa';
 import { useAuth } from '../../../context/AuthContext';
 import serviceService from '../../../services/service.services';
+import { Link } from 'react-router';
 
 
 const Services = () => {
@@ -104,12 +105,12 @@ const Services = () => {
                                         <p className="mb-0 small">{service.service_description}</p>
                                     </div>
                                     <div className="d-flex mx-2">
-                                        <a href="#" className="">
+                                        <Link to={`/editService/${service.service_id}`} className="">
                                             <FaPencilAlt style={{ cursor: 'pointer' }} />
-                                        </a>
-                                        <a href="#" className="ms-2">
+                                        </Link>
+                                        <Link to={`/deleteService/${service.service_id}`} className="ms-2">
                                             <FaTrashAlt style={{ cursor: 'pointer' }} />
-                                        </a>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

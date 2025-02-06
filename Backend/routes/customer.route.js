@@ -11,6 +11,10 @@ router.post("/api/customer", [authMiddleware.verifyToken, authMiddleware.isAdmin
 router.get("/api/customers", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.getAllCustomers);
 //create a route to get a single customer
 router.get("/api/customer/:id", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.getsingleCustomer);
+//create a route to update a single customer
+router.put("/api/customer/:customerId", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.updateCustomer);
+//create a route to delete a single customer
+router.delete("/api/customer/:customerId", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.deleteCustomer);
 
 
 

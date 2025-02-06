@@ -91,13 +91,24 @@ const updateEmployee = async (employeeId, formData, loggedInEmployeeToken) => {
   const response = await fetch(`${api_url}/api/employee/${employeeId}`, requestOptions);
   return response;
 };
-
+const deleteEmployee = async (employeeId, loggedInEmployeeToken) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': loggedInEmployeeToken
+    }
+  };
+  const response = await fetch(`${api_url}/api/employee/${employeeId}`, requestOptions);
+  return response;
+};
 // Export all functions
 const employeeService = {
   createEmployee,
   getAllEmployees,
   getSingleEmployee, // Newly added function
-  updateEmployee
+  updateEmployee,
+  deleteEmployee
 };
 
 export default employeeService;

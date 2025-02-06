@@ -68,10 +68,92 @@ async function getSingleVehicle(vehicleId) {
         throw error;
     }
 }
+async function updateVehicle(vehicleId, updateData) {
+    try {
+        const { vehicle_year, vehicle_make, vehicle_model, vehicle_type, vehicle_mileage, vehicle_tag, vehicle_serial, vehicle_color } = updateData;
+
+        const vehicleQuery = `
+            UPDATE customer_vehicle_info
+            SET vehicle_year = ?,
+                vehicle_make = ?,
+                vehicle_model = ?,
+                vehicle_type = ?,
+                vehicle_mileage = ?,
+                vehicle_tag = ?,
+                vehicle_serial = ?,
+                vehicle_color = ?
+            WHERE vehicle_id = ?`;
+
+        const vehicleResult = await conn.query(vehicleQuery, [
+            vehicle_year,
+            vehicle_make,
+            vehicle_model,
+            vehicle_type,
+            vehicle_mileage,
+            vehicle_tag,
+            vehicle_serial,
+            vehicle_color,
+            vehicleId
+        ]);
+
+        if (vehicleResult.affectedRows === 0) {
+            return false; // Or handle the case where no rows were updated
+        }
+
+        return true;
+
+    } catch (err) {
+        console.error("Error updating vehicle:", err);
+        return false;
+    }
+}
+async function deleteVehicle(vehicleId) {
+    try {
+        // 1. Delete from order_services (FK: order_id, which is FK to orders, which is FK to customer_vehicle_info)
+        const orderServicesDeleteResult = await conn.query(`
+            DELETE FROM order_services 
+            WHERE order_id IN (SELECT order_id FROM orders WHERE vehicle_id = ?)`, 
+            [vehicleId]
+        );
+
+        // 2. Delete from order_status (FK: order_id, which is FK to orders, which is FK to customer_vehicle_info)
+        const orderStatusDeleteResult = await conn.query(`
+            DELETE FROM order_status 
+            WHERE order_id IN (SELECT order_id FROM orders WHERE vehicle_id = ?)`, 
+            [vehicleId]
+        );
+
+        // 3. Delete from order_info (FK: order_id, which is FK to orders, which is FK to customer_vehicle_info)
+        const orderInfoDeleteResult = await conn.query(`
+            DELETE FROM order_info 
+            WHERE order_id IN (SELECT order_id FROM orders WHERE vehicle_id = ?)`, 
+            [vehicleId]
+        );
+
+        // 4. Delete from orders (FK: vehicle_id)
+        const ordersDeleteResult = await conn.query("DELETE FROM orders WHERE vehicle_id = ?", [vehicleId]);
+
+        // 5. Finally, delete the vehicle itself
+        const vehicleDeleteResult = await conn.query("DELETE FROM customer_vehicle_info WHERE vehicle_id = ?", [vehicleId]);
+
+
+        if (vehicleDeleteResult.affectedRows === 0) {
+            return false; // Vehicle not found
+        }
+
+        return true; // All deletions successful
+
+    } catch (err) {
+        console.error("Error deleting vehicle:", err);
+        return false;
+    }
+}
 // Export the functions for use in the controller
 module.exports = {
     addVehicle,
     getVehicles,
-    getSingleVehicle
+    getSingleVehicle,
+    updateVehicle,
+    deleteVehicle
     
 };

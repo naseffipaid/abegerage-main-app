@@ -51,10 +51,36 @@ const getSingleVehicle = async (token,vehicleId) => {
   const response = await fetch(`${api_url}/api/vehicle/${vehicleId}`, requestOptions);
   return response;
 }
+const updateVehicle = async (vehicleId, formData, token) => {
+  const requestOptions = {
+    method: 'PUT', // Use PUT method for updates
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    },
+    body: JSON.stringify(formData),
+  };
+
+  const response = await fetch(`${api_url}/api/vehicle/${vehicleId}`, requestOptions);
+  return response;
+};
+const deleteVehicle = async (vehicleId, loggedInEmployeeToken) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': loggedInEmployeeToken
+    }
+  };
+  const response = await fetch(`${api_url}/api/vehicle/${vehicleId}`, requestOptions);
+  return response;
+};
 // Export the service
 const VehicleService = {
   addVehicle,
   getVehicles,
   getSingleVehicle,
+  updateVehicle,
+  deleteVehicle
 };
 export default VehicleService;

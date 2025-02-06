@@ -38,9 +38,70 @@ async function getservices(req, res, next) {
     });
   }
 }
+// Create the getsingle service controller 
+ async function getSingleService(req, res, next) {
+  // extract vehicleId from the request params
+  const { serviceId } = req.params;
+  // Call the getSinglevehicle method from the vehicle service 
+  const service = await serviceService.getSingleService(serviceId);
+  // console.log(employees);
+  if (!service) {
+    res.status(400).json({
+      error: "Failed to get a service!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: service,
+    });
+  }
+}
+async function updateService(req, res) {
+  try {
+    const { serviceId } = req.params;
+    const updateData = req.body;
+
+    if (!updateData) {
+      return res.status(400).json({ error: "Missing service_id " });
+    }
+
+    const result = await serviceService.updateService(serviceId, updateData);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to update service." });
+    }
+
+    return res.status(200).json({ success: true, message: "service updated successfully." });
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
+async function deleteService(req, res) {
+  try {
+    const { serviceId } = req.params;
+
+    if (!serviceId) {
+      return res.status(400).json({ error: "Missing service_id " });
+    }
+
+    const result = await serviceService.deleteService(serviceId);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to delete service." });
+    }
+
+    return res.status(200).json({ success: true, message: "service deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting service status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
   // Export the createEmployee controller 
   module.exports = {
     addService,
-    getservices
-    
+    getservices,
+    getSingleService,
+    updateService,
+    deleteService
   };
