@@ -61,6 +61,18 @@ const getSingleOrder = async (token,orderHash) => {
   const response = await fetch(`${api_url}/api/order/${orderHash}`, requestOptions);
   return response;
 }
+const getSingleOrderbyCustomer = async (token,id) => {
+  // console.log(token);
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': token
+    }
+  };
+  const response = await fetch(`${api_url}/api/order/byCustomer/${id}`, requestOptions);
+  return response;
+}
 const getSingleOrderCustomer = async (orderHash) => {
   // console.log(token);
   const requestOptions = {
@@ -98,14 +110,54 @@ const updateServiceStatus = async (token, orderHash, serviceId, status) => {
     return { error: "Failed to update service status" };
   }
 };
+const handleAdditionalRequestUpdate = async (token, orderHash, status) => {
+  const requestOptions = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify({additional_requests_completed: parseInt(status, 10)  // ✅ Ensure Integer
+ }),
+  };
+
+  try {
+    const response = await fetch(`${api_url}/api/order/additional/${orderHash}`, requestOptions);
+    console.log("Raw Response:", response); // ✅ Debugging: Log response object
+
+    const responseText = await response.text(); // ✅ Read response as text (before parsing)
+    console.log("Response Text:", responseText); // ✅ Debugging: Log raw response
+
+    // ✅ Check if response is JSON
+    
+    return response;
+
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return { error: "Failed to update service status" };
+  }
+};
+const deleteOrder = async (orderHash, loggedInEmployeeToken) => {
+  const requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-access-token': loggedInEmployeeToken
+    }
+  };
+  const response = await fetch(`${api_url}/api/order/${orderHash}`, requestOptions);
+  return response;
+};
 // Export the service
 const OrderService = {
   addOrder,
   getAllOrders,
   getSingleOrder,
   updateServiceStatus,
-  getSingleOrderCustomer
-  
-  
+  getSingleOrderCustomer,
+  handleAdditionalRequestUpdate,
+  getSingleOrderbyCustomer,
+  deleteOrder
+   
 };
 export default OrderService;

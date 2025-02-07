@@ -61,6 +61,24 @@ async function getorders(req, res, next) {
     });
   }
 }
+// / Create the getsingle order controller by customer id 
+ async function getOrderByCustomer(req, res, next) {
+  // extract orderHash from the request params
+  const { customerId } = req.params;
+  // Call the getSingorder method from the order service 
+  const order = await orderService.getSingleOrderByCustomer(customerId);
+  // console.log(order);
+  if (!order) {
+    res.status(400).json({
+      error: "Failed to get a order!"
+    });
+  } else {
+    res.status(200).json({
+      status: "success",
+      data: order,
+    });
+  }
+}
 async function updateServiceStatus(req, res) {
   try {
     const { orderHash } = req.params;
@@ -82,11 +100,54 @@ async function updateServiceStatus(req, res) {
     return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
   }
 }
+async function updateAdditionalRequest(req, res) {
+  try {
+    const { orderHash } = req.params;
+    const { additional_requests_completed } = req.body;
+
+    if (!additional_requests_completed=== undefined) {
+      return res.status(400).json({ error: " missing additional request_completed" });
+    }
+
+    const result = await orderService.updateAdditionalRequest(orderHash, additional_requests_completed);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to update additional request." });
+    }
+
+    return res.status(200).json({ success: true, message: "additional request  updated successfully." });
+  } catch (error) {
+    console.error("Error updating service status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
+async function deleteOrder(req, res) {
+  try {
+    const { orderHash } = req.params;
+
+    if (!orderHash) {
+      return res.status(400).json({ error: "Missing orderHash " });
+    }
+
+    const result = await orderService.deleteOrder(orderHash);
+
+    if (!result) {
+      return res.status(400).json({ error: "Failed to delete order." });
+    }
+
+    return res.status(200).json({ success: true, message: "Order deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting order status:", error);
+    return res.status(500).json({ error: "Internal Server Error. Please check server logs." }); // ✅ Always return JSON
+  }
+}
   // Export the createEmployee controller 
   module.exports = {
     addOrder,
     getorders,
     getSingleOrder, 
-    updateServiceStatus
-    
+    updateServiceStatus,
+    updateAdditionalRequest,
+    getOrderByCustomer,
+    deleteOrder
   };

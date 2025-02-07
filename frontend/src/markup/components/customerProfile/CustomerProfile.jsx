@@ -6,6 +6,7 @@ import customerService from '../../../services/customer.services';
 import { Link, useParams } from 'react-router-dom';
 import AddVehicleForm from '../vehicles/AddVehicleForm';  // ✅ Import AddVehicleForm
 import VehiclePerCustomer from '../vehicles/VehiclePerCustomer';
+import RequestedOrder from '../orders/RequestedOrder';
 
 const CustomerProfile = () => {
   const { id } = useParams();  // ✅ Extract customer_id from URL
@@ -98,7 +99,7 @@ const CustomerProfile = () => {
               </div>
               <div className="p-5 flex-grow-1" style={{ background: '#f8f9fa', borderRadius: '10px' }}>
                 <h5 className="text-primary">Orders of {customer.customer_first_name}</h5>
-                <p className="text-muted">Orders will be displayed here</p>
+                 <RequestedOrder/>
               </div>
             </div>
           </>

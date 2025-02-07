@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaEdit, FaExternalLinkAlt } from "react-icons/fa";
+import { FaEdit, FaExternalLinkAlt, FaTrash } from "react-icons/fa"; // Import FaTrash for delete icon
 import { useAuth } from "../../../context/AuthContext";
 import orderService from "../../../services/order.services";
 import { Link } from "react-router";
@@ -115,7 +115,7 @@ const GetAllOrders = () => {
                   {order.vehicle_year} <br />
                   {order.vehicle_tag}
                 </td>
-                <td className="align-middle">{order.order_date ? new Date(order.order_date).      toLocaleDateString("en-US", {year: "numeric",month: "long", day: "numeric"}):"N/A"}</td>
+                <td className="align-middle">{order.order_date ? new Date(order.order_date).toLocaleDateString("en-US", {year: "numeric",month: "long", day: "numeric"}):"N/A"}</td>
                 <td className="align-middle">{order.company_role_name} {order.employee_first_name}</td>
                 <td className="align-middle">
                   <span className={getStatusBadge(
@@ -136,8 +136,12 @@ const GetAllOrders = () => {
                   <Link to={`/order/edit/${order.order_hash}`} className="text-dark me-2">
                     <FaEdit size={18} />
                   </Link>
-                  <Link to={`/order/${order.order_hash}`} className="text-dark">
+                  <Link to={`/order/${order.order_hash}`} className="text-dark me-2">
                     <FaExternalLinkAlt size={18} />
+                  </Link>
+                  {/* Add delete icon with link */}
+                  <Link to={`/deleteOrder/${order.order_hash}`} className="text-dark">
+                    <FaTrash size={18} />
                   </Link>
                 </td>
               </tr>

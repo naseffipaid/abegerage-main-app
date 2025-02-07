@@ -47,6 +47,7 @@ import EditVehiclePage from './markup/pages/admin/EditVehiclePage';
 import DeleteVehiclePage from './markup/pages/admin/DeleteVehiclePage';
 import EditServicePage from './markup/pages/admin/EditServicePage';
 import DeleteServicePage from './markup/pages/admin/DeleteServicePage';
+import DeleteOrderPage from './markup/pages/admin/DeleteOrderPage';
 
 
 
@@ -105,6 +106,13 @@ function App() {
           element={
             <PrivateAuthRoute roles={[2, 3]}>
               <OrderDetailPage editButton = {true}/>
+            </PrivateAuthRoute>
+          } />
+           {/* delete order */}
+           <Route path="/deleteOrder/:orderHash"
+          element={
+            <PrivateAuthRoute roles={[3]}>
+              <DeleteOrderPage/>
             </PrivateAuthRoute>
           } />
           {/* add customer route */}

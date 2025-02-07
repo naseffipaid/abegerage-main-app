@@ -174,6 +174,47 @@ async function getSingleOrder(orderHash) {
         throw error;
     }
 }
+// A function to get single order
+async function getSingleOrderByCustomer(customerId) {
+  const query = `
+    SELECT 
+      orders.order_id,
+      orders.order_date,
+      orders.active_order,
+      orders.order_hash,
+      order_status.order_status,
+
+      order_info.order_total_price,
+      order_info.estimated_completion_date,
+      order_info.completion_date,
+      order_info.additional_request,
+      order_info.notes_for_internal_use,
+      order_info.notes_for_customer,
+      order_info.additional_requests_completed,
+
+      order_services.service_id,
+      common_services.service_name,
+      common_services.service_description,
+      order_services.service_completed
+
+    FROM orders
+    INNER JOIN order_status ON orders.order_id = order_status.order_id
+    INNER JOIN order_info ON orders.order_id = order_info.order_id
+    LEFT JOIN order_services ON orders.order_id = order_services.order_id
+    LEFT JOIN common_services ON order_services.service_id = common_services.service_id
+
+    WHERE orders.customer_id = ?;
+  `;
+
+  try {
+    const rows = await conn.query(query, [customerId]);
+    console.log("Fetched Data:", rows); // Debugging: Check the response
+    return rows;
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    throw error;
+  }
+}
 
 // ✅ Update Service Status (Uses serviceId)
 async function updateServiceStatus(orderHash, serviceId, service_completed) {
@@ -216,12 +257,68 @@ async function updateServiceStatus(orderHash, serviceId, service_completed) {
       return false;
     }
   }
+  async function updateAdditionalRequest(orderHash, additional_requests_completed) {
+    try {
+      // ✅ Step 1: Update `order_services` table
+      const query = `
+        UPDATE order_info 
+        SET additional_requests_completed= ? 
+        WHERE order_id = (SELECT order_id FROM orders WHERE order_hash = ?) 
+        `;
+      const result = await conn.query(query, [parseInt(additional_requests_completed, 10), orderHash]);
+  
+      if (result.affectedRows === 0) {
+        return false; // ✅ No rows updated
+      }
+      return true; // ✅ Successfully updated
+    } catch (err) {
+      console.error("Error updating additional request ", err);
+      return false;
+    }
+  }
+  async function deleteOrder(orderHash) {
+    try {
+        // 1. Get the order_id from the order_hash
+        const orderIdResult = await conn.query("SELECT order_id FROM orders WHERE order_hash = ?", [orderHash]);
+
+        if (orderIdResult.length === 0) {
+            return false; // Order not found
+        }
+
+        const orderId = orderIdResult[0].order_id;
+
+        // 2. Delete from order_status (FK: order_id)
+        await conn.query("DELETE FROM order_status WHERE order_id = ?", [orderId]);
+
+        // 3. Delete from order_services (FK: order_id) - Handle multiple services
+        await conn.query("DELETE FROM order_services WHERE order_id = ?", [orderId]);
+
+        // 4. Delete from order_info (FK: order_id)
+        await conn.query("DELETE FROM order_info WHERE order_id = ?", [orderId]);
+
+        // 5. Delete from orders (Parent Table)
+        const ordersDeleteResult = await conn.query("DELETE FROM orders WHERE order_id = ?", [orderId]);
+
+        if (ordersDeleteResult.affectedRows === 0) {
+            return false; // Order not found (shouldn't happen at this point)
+        }
+
+        return true; // All deletions successful
+
+    } catch (err) {
+        console.error("Error deleting order:", err);
+        return false;
+    }
+}
 // Export the functions for use in the controller
 module.exports = {
     checkExistingOrder,
     addOrder,
     getOrders,
     getSingleOrder,
-    updateServiceStatus
+    updateServiceStatus,
+    updateAdditionalRequest,
+    getSingleOrderByCustomer,
+    deleteOrder
     
 };
