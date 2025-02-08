@@ -206,7 +206,11 @@ function App() {
             </PrivateAuthRoute>
           } />
         {/* // Add the Employees Route  */}
-        <Route path="/admin/employees" element={<Employee />} />
+        <Route path="/admin/employees" element={
+          <PrivateAuthRoute role = {[2,3]}>
+          <Employee />
+          </PrivateAuthRoute>
+          } />
         {/* // Add the Home Route  */}
         <Route path="/" element={<HomePage />} />
         {/* // check status page for the customer  */}

@@ -94,6 +94,11 @@ function AddEmployeeForm() {
           console.log(data);
           setSuccess(true);
           setServerError('')
+          setFirstName("")
+          setLastName("")
+          setEmail("")
+          setPhoneNumber("")
+          setPassword("")
           // Redirect to the employees page after 2 seconds 
           // For now, just redirect to the home page 
           // setTimeout(() => {
@@ -125,6 +130,7 @@ function AddEmployeeForm() {
           <div className="form-column col-lg-7">
             <div className="inner-column">
               <div className="contact-form">
+                {success && <p>Employee added successfully</p>}
                 <form onSubmit={handleSubmit}>
                   <div className="row clearfix">
                     <div className="form-group col-md-12">

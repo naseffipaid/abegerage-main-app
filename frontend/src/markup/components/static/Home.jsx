@@ -118,7 +118,7 @@ const Home = () => {
               <h1 className="display-4 fw-bold text-white">Tuneup Your Car <br />to Next Level</h1>
               <p className="lead mt-4">We have 24 years experience</p>
               <div className="mt-4">
-                <button className="btn btn-danger btn-lg">Learn More</button>
+                <Link to='/serviceDetail' className="btn btn-danger btn-lg">Learn More</Link>
               </div>
             </div>
           </div>
@@ -183,7 +183,7 @@ const Home = () => {
                 <div className="card" style={{ height: '200px' }}>
                   <div className="card-body text-center">
                     <h5 className="card-title fw-bold" style={{ color: '#333' }}>{service}</h5>
-                    <Link to="#" className="text-danger mt-2 d-block">Read More</Link>
+                    <Link to="/serviceDetail" className="text-danger mt-2 d-block">Read More</Link>
                   </div>
                 </div>
               </div>
@@ -234,6 +234,7 @@ const Home = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         color: '#fff',
+        height: "400px",
         padding: '200px 50px', // Increased padding to make the section taller
         marginTop: '20px', // Added margin-top for gap
       }}>

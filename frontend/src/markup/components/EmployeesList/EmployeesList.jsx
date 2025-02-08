@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-// Import React Icons  
 import { FaEdit, FaTrash } from "react-icons/fa";
-// Import the auth hook  
 import { useAuth } from "../../../context/AuthContext";
-// Import the date-fns library  
-import { format } from 'date-fns'; // To properly format the date on the table  
-// Import the getAllEmployees function  
+import { format } from 'date-fns';
 import employeeService from "../../../services/employee.services";
 
-// Create the EmployeesList component  
 const EmployeesList = () => {
-  // Create all the states we need to store the data  
   const [employees, setEmployees] = useState([]);
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [employeesPerPage] = useState(10);
   const { employee } = useAuth();
   let token = employee ? employee.employee_token : null;
 
@@ -38,7 +34,17 @@ const EmployeesList = () => {
     }).catch((err) => {
       console.log(err);
     });
-  }, []);
+  }, [token]);
+
+  // Pagination logic
+  const indexOfLastEmployee = currentPage * employeesPerPage;
+  const indexOfFirstEmployee = indexOfLastEmployee - employeesPerPage;
+  const currentEmployees = employees.slice(indexOfFirstEmployee, indexOfLastEmployee);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(employees.length / employeesPerPage);
 
   return (
     <>
@@ -70,7 +76,7 @@ const EmployeesList = () => {
                 </tr>
               </thead>
               <tbody>
-                {employees.map((employee) => (
+                {currentEmployees.map((employee) => (
                   <tr key={employee.employee_id}>
                     <td>{employee.active_employee ? "Yes" : "No"}</td>
                     <td>{employee.employee_first_name}</td>
@@ -93,6 +99,35 @@ const EmployeesList = () => {
                 ))}
               </tbody>
             </Table>
+
+            {/* Pagination Controls */}
+            <div className="pagination-container d-flex justify-content-between align-items-center">
+              <Button 
+                disabled={currentPage === 1} 
+                onClick={() => paginate(currentPage - 1)} 
+                className="pagination-button"
+              >
+                Previous
+              </Button>
+              <div className="page-buttons-container d-flex">
+                {[...Array(totalPages)].map((_, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => paginate(index + 1)}
+                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                  >
+                    {index + 1}
+                  </Button>
+                ))}
+              </div>
+              <Button 
+                disabled={currentPage === totalPages} 
+                onClick={() => paginate(currentPage + 1)} 
+                className="pagination-button"
+              >
+                Next
+              </Button>
+            </div>
           </div>
         </section>
       )}

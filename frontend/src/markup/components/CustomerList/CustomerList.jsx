@@ -10,6 +10,8 @@ const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
   const [apiError, setApiError] = useState(false);
   const [apiErrorMessage, setApiErrorMessage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [customersPerPage] = useState(10); // Show 10 customers per page
   const { employee } = useAuth();
   let token = employee ? employee.employee_token : null;
 
@@ -35,6 +37,16 @@ const CustomerList = () => {
       console.log(err);
     })
   }, [token]);
+
+  // Pagination logic
+  const indexOfLastCustomer = currentPage * customersPerPage;
+  const indexOfFirstCustomer = indexOfLastCustomer - customersPerPage;
+  const currentCustomers = customers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total pages
+  const totalPages = Math.ceil(customers.length / customersPerPage);
 
   return (
     <>
@@ -65,7 +77,7 @@ const CustomerList = () => {
                 </tr>
               </thead>
               <tbody>
-                {customers.map((customer) => (
+                {currentCustomers.map((customer) => (
                   <tr key={customer.customer_id}>
                     <td>
                       <Link to={`/admin/customers/${customer.customer_id}`} className="text-dark">
@@ -82,7 +94,7 @@ const CustomerList = () => {
                     <td>{format(new Date(customer.customer_added_date), 'MM-dd-yyyy | HH:mm')}</td>
                     <td>{customer.active_customer_status ? "Yes" : "No"}</td>
                     <td>
-                    <div className="edit-delete-icons d-flex gap-2"> {/* Added flexbox for spacing */}
+                      <div className="edit-delete-icons d-flex gap-2"> {/* Added flexbox for spacing */}
                         <Link to={`/editCustomer/${customer.customer_id}`} className="text-primary"> {/* Link to EditCustomer */}
                           <FaEdit size={18} />
                         </Link>
@@ -95,6 +107,35 @@ const CustomerList = () => {
                 ))}
               </tbody>
             </Table>
+
+            {/* Pagination Controls */}
+            <div className="pagination-container d-flex justify-content-between align-items-center">
+              <Button 
+                disabled={currentPage === 1} 
+                onClick={() => paginate(currentPage - 1)} 
+                className="pagination-button"
+              >
+                Previous
+              </Button>
+              <div className="page-buttons-container d-flex">
+                {[...Array(totalPages)].map((_, index) => (
+                  <Button
+                    key={index}
+                    onClick={() => paginate(index + 1)}
+                    className={`pagination-button ${currentPage === index + 1 ? 'active' : ''}`}
+                  >
+                    {index + 1}
+                  </Button>
+                ))}
+              </div>
+              <Button 
+                disabled={currentPage === totalPages} 
+                onClick={() => paginate(currentPage + 1)} 
+                className="pagination-button"
+              >
+                Next
+              </Button>
+            </div>
           </div>
         </section>
       )}

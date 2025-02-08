@@ -297,3 +297,24 @@
 .card:last-child{
   border-bottom: 2px solid red;
 }
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.page-buttons-container {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.pagination-button {
+  margin: 0 5px;
+}
+
+.pagination-button.active {
+  background-color: #007bff;
+  color: white;
+}

@@ -1,37 +1,68 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Differential from "../../../assets/images/differential.webp";
+import Tool from "../../../assets/images/tools.png";
+
 
 const ServiceDetail = () => {
   return (
     <div className="page-wrapper">
-      {/* Page Title Section */}
-      <section
-        className="page-title"
-        style={{ backgroundImage: 'url(assets/images/background/bg-3.jpg)' }}
-      >
-        <div className="auto-container">
-          <h2>Single Service</h2>
-          <ul className="page-breadcrumb">
-            <li>
-              <Link to="/">home</Link>
-            </li>
-            <li>Single Service</li>
-          </ul>
-        </div>
-        <h1 data-parallax='{"x": 200}'>Car Repairing</h1>
-      </section>
+      {/* Banner Section */}
+            <div
+              className="leader-section text-white text-center position-relative"
+              style={{
+                height: '500px', // Increased height
+                overflow: 'hidden', // Ensure the image doesn't overflow
+              }}
+            >
+              {/* Background Image */}
+              <img
+                src={Differential}
+                alt="Leader Background"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover', // Ensure the image covers the entire container
+                  zIndex: 0,
+                }}
+              />
+              {/* Overlay */}
+              <div
+                className="overlay"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+                  zIndex: 1,
+                }}
+              />
+              {/* Content */}
+              <div
+                className="container position-relative d-flex flex-column justify-content-center align-items-center"
+                style={{ zIndex: 2, height: '100%' }} // Center content vertically and horizontally
+              >
+                <h2 className="text-white display-4 fw-bold mb-5">Single Services</h2>
+                <Link to='/' className="btn btn-primary btn-lg">Home</Link>
+              </div>
+            </div>
 
       {/* Sidebar Page Container */}
-      <div className="sidebar-page-container">
+      <div className="sidebar-page-container ms-5">
         <div className="auto-container">
           <div className="row">
             {/* Content Side */}
             <div className="content-side col-xl-9 col-lg-8 order-lg-2">
               <div className="services-single">
                 <div className="inner-box">
-                  <div className="big-image">
-                    <img src="assets/images/resource/service-9.jpg" alt="" />
-                  </div>
+                  {/* <div className="big-image">
+                    <img src={Tool} alt="tool" style={{width:'30%'}} />
+                  </div> */}
                   <h2>Performance Upgrade</h2>
                   <div className="text">
                     <p>
@@ -69,7 +100,7 @@ const ServiceDetail = () => {
                         </div>
                         <div className="image-column col-md-6">
                           <div className="image">
-                            <img src="assets/images/resource/service-10.jpg" alt="" />
+                            <img src={Tool} alt="tool" style={{width:'80%'}} />
                           </div>
                         </div>
                       </div>
@@ -157,7 +188,6 @@ const ServiceDetail = () => {
                       </div>
                     </div>
                   </div>
-
                   {/* Accordian Boxed */}
                   <div className="accordian-boxed">
                     <h3>More information</h3>

@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import tireImages from "../../../assets/images/tireImages.webp";
+import Detailed from "../../../assets/images/differential.webp";
 
 const ContactUs = () => {
   return (
@@ -8,10 +10,10 @@ const ContactUs = () => {
       <section
         className="d-flex align-items-end"
         style={{
-          backgroundImage: "url('path-to-background-image.jpg')", // Replace with actual path
+          backgroundImage: `url('${tireImages}')`, // Replace with actual path
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "300px", // Adjust height as needed
+          height: "500px", // Adjust height as needed
           paddingBottom: "30px", // Positions text lower
         }}
       >
