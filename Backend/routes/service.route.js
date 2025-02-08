@@ -12,8 +12,8 @@ router.get("/api/services", [authMiddleware.verifyToken], serviceController.gets
 // Create a route to handle the get single service request on get
 router.get("/api/service/:serviceId", [authMiddleware.verifyToken], serviceController.getSingleService);
 //  Create a route to handle the update single service request on put
-router.put("/api/service/:serviceId", [authMiddleware.verifyToken], serviceController.updateService);
+router.put("/api/service/:serviceId", [authMiddleware.verifyToken, authMiddleware.isAdmin], serviceController.updateService);
 //  Create a route to handle the delete single service on delete
-router.delete("/api/service/:serviceId", [authMiddleware.verifyToken], serviceController.deleteService);
+router.delete("/api/service/:serviceId", [authMiddleware.verifyToken, authMiddleware.isAdmin], serviceController.deleteService);
 
 module.exports = router

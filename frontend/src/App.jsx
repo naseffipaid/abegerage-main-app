@@ -118,7 +118,7 @@ function App() {
           {/* add customer route */}
           <Route path="/admin/add-customer"
           element={
-            <PrivateAuthRoute roles={[2,3]}>
+            <PrivateAuthRoute roles={[3]}>
               <AddCustomer />
             </PrivateAuthRoute>
           } />
@@ -138,28 +138,28 @@ function App() {
           {/* /edit single customer */}
           <Route path="/editCustomer/:customerId"
           element={
-            <PrivateAuthRoute roles={[2,3]}>
+            <PrivateAuthRoute roles={[3]}>
               <EditCustomerPage/>
             </PrivateAuthRoute>
           } />
           {/* delete single customer */}
           <Route path="/deleteCustomer/:customerId"
           element={
-            <PrivateAuthRoute roles={[2,3]}>
+            <PrivateAuthRoute roles={[3]}>
               <DeleteCustomerPage/>
             </PrivateAuthRoute>
           } />
           {/* edit single vehicle */}
           <Route path="/editVehicle/:vehicleId"
           element={
-            <PrivateAuthRoute roles={[2,3]}>
+            <PrivateAuthRoute roles={[3]}>
               <EditVehiclePage/>
             </PrivateAuthRoute>
           } />
           {/* delete single vehicle */}
           <Route path="/deleteVehicle/:vehicleId"
           element={
-            <PrivateAuthRoute roles={[2,3]}>
+            <PrivateAuthRoute roles={[3]}>
               <DeleteVehiclePage/>
             </PrivateAuthRoute>
           } />
@@ -207,7 +207,7 @@ function App() {
           } />
         {/* // Add the Employees Route  */}
         <Route path="/admin/employees" element={
-          <PrivateAuthRoute role = {[2,3]}>
+          <PrivateAuthRoute role = {[3]}>
           <Employee />
           </PrivateAuthRoute>
           } />

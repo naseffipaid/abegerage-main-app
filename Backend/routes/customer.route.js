@@ -5,12 +5,12 @@ const authMiddleware = require('../middlewares/auth.miiddleware');
 const router = express.Router();
 // Import the add employee controller 
 const customerController = require('../controllers/customer.controller');
-// Create a route to handle the add employee request on post
+// Create a route to handle the add customer request on post
 router.post("/api/customer", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.createCustomer); 
 // Create a route to handle the get all employees request on get
-router.get("/api/customers", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.getAllCustomers);
+router.get("/api/customers", [authMiddleware.verifyToken], customerController.getAllCustomers);
 //create a route to get a single customer
-router.get("/api/customer/:id", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.getsingleCustomer);
+router.get("/api/customer/:id", [authMiddleware.verifyToken,], customerController.getsingleCustomer);
 //create a route to update a single customer
 router.put("/api/customer/:customerId", [authMiddleware.verifyToken, authMiddleware.isAdmin], customerController.updateCustomer);
 //create a route to delete a single customer

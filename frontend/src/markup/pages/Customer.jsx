@@ -1,17 +1,8 @@
 import React from 'react'
-import { useAuth } from '../../context/AuthContext';
 import AdminMenu from '../components/AddEmployeeForm/AdminMenu/AdminMenu';
-import LoginForm from '../components/LoginForm/LoginForm';
 import CustomerList from '../components/CustomerList/CustomerList';
 
 function Customer() {
-  const { isLogged, isAdmin } = useAuth();
-  
-    if (isLogged) {
-  
-      console.log("Kebede");
-  
-      if (isAdmin) {
         return (
           <div>
             <div className="container-fluid admin-pages">
@@ -26,20 +17,6 @@ function Customer() {
             </div>
           </div>
         );
-      } else {
-        return (
-          <div>
-            <h1>You are not authorized to access this page</h1>
-          </div>
-        );
-      }
-    } else {
-      return (
-        <div>
-          <LoginForm />
-        </div>
-      );
-    }
-}
+      } 
 
 export default Customer

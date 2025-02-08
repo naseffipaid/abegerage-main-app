@@ -6,13 +6,13 @@ const router = express.Router();
 // Import the add employee controller 
 const vehicleController = require('../controllers/vehicle.controller');
 // Create a route to handle the add employee request on post
-router.post("/api/vehicle", [authMiddleware.verifyToken, authMiddleware.isAdmin], vehicleController.addVehicle); 
+router.post("/api/vehicle", [authMiddleware.verifyToken], vehicleController.addVehicle); 
 // Create a route to handle the get all vehicles request on get
 router.get("/api/vehicles/:customer_id", [authMiddleware.verifyToken], vehicleController.getVehicles);
 //create a route to handle songle vehihle request
 router.get("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.getSingleVehicle);
 //create a route to handle update vehicle on put
-router.put("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.updateVehicle);
+router.put("/api/vehicle/:vehicleId", [authMiddleware.verifyToken, authMiddleware.isAdmin], vehicleController.updateVehicle);
 //create a route to handle delete vehicle on delete
 router.delete("/api/vehicle/:vehicleId", [authMiddleware.verifyToken], vehicleController.deleteVehicle);
 
