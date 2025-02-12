@@ -30,7 +30,7 @@ app.use(sanitize.middleware);
 app.use(routes);
 // Start the webserver
 app.listen(port, () => {
-    console.log(`Server started on http://localhost:${port}`);
+    console.log(`Server started on http://16.16.91.108:${port}`);
 });
 // Export the webserver for use in the application 
 module.exports = app;
