@@ -9,12 +9,27 @@ const sanitize = require('sanitize');
 // Import the CORS module
 const cors = require('cors');
 // Set up the CORS options to allow requests from our front-end
-const corsOptions = {
-    origin: process.env.FRONTEND_URL,
-    optionsSuccessStatus: 200
-};
+// const corsOptions = {
+//     origin: ['http://localhost:5173', 'http://16.16.91.108:5173'],  // Add both localhost and your server's frontend IP
+//     methods: ['GET', 'POST', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type'],
+//     credentials: true,  // Allow credentials (cookies, etc.) if needed
+//     preflightContinue: false, // CORS preflight request handling
+//   };
+// const corsOptions = {
+//     origin: '*',  // Allow all origins
+//     methods: 'GET,POST,PUT,DELETE',  // Allow these methods
+//     allowedHeaders: 'Content-Type',  // Allow these headers
+//   };
+  
+
 // Add the CORS middleware to the express application
-app.use(cors(corsOptions));
+app.use(cors());
+// app.use((req, res, next) => {
+//     console.log("Request Origin:", req.headers.origin); // Log the origin
+//     console.log("Request Headers:", req.headers); // Log all headers
+//     next();
+//   });
 // Create a variable to hold our port number
 const port = process.env.PORT ;
 // Import the routes
