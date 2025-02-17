@@ -67,8 +67,13 @@ app.use(express.json());
 // Add the sanitizer to the express middleware
 app.use(sanitize.middleware);
 
+app.use((req, res, next) => {
+    console.log(`Received request: ${req.method} ${req.url}`);
+    next();
+});
 // Add the routes to the application as middleware
 app.use(routes);
+
 
 // Load SSL certificate and key
 const options = {
