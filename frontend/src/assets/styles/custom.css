@@ -318,3 +318,112 @@
   background-color: #007bff;
   color: white;
 }
+
+/* //header */
+/* Header Top Section */
+.header-top {
+  background-color: #222;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.header-top .text,
+.header-top .office-hour {
+  font-size: 14px;
+}
+
+/* Header Upper Section */
+.header-upper {
+  background-color: #fff;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Logo */
+.logo img {
+  height: 60px;
+}
+
+/* Navigation Styling */
+.navigation {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation li {
+  padding: 10px 15px; /* Padding for large screens */
+}
+
+.navigation li a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  transition: color 0.3s;
+}
+
+.navigation li a:hover {
+  color: #0056b3;
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+
+.mobile-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  text-align: center;
+}
+
+.mobile-menu-grid a {
+  text-decoration: none;
+  font-weight: bold;
+  color: #000;
+  padding: 5px;
+}
+
+/* Adjust padding only on large screens */
+@media (max-width: 768px) {
+  .navigation li {
+    padding: 0; /* Remove extra padding for mobile */
+  }
+
+  .mobile-menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Increase text darkness */
+.navigation li a,
+.mobile-menu-grid a {
+  color: #111; /* Darker black */
+}
+/* Mobile Display for Username & Office Hours */
+.mobile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.mobile-info strong {
+  font-weight: bold;
+}
+
+/* Keep office hours on a new row on mobile */
+@media (max-width: 768px) {
+  .mobile-info .office-hour {
+    font-size: 14px; /* Optional: adjust font size for mobile */
+  }
+}
+
+
